@@ -24,9 +24,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TimerProgress(
-    maxTime: Int,
-    currentTime: Int,
+fun ShderProgress(
+    progress: Float,
     progressColor: Color,
     modifier: Modifier = Modifier,
     strokeWidth: Dp = 2.dp,
@@ -52,17 +51,16 @@ fun TimerProgress(
                 )
             )
 
-            val sweepAngle = 360f * (currentTime.toFloat() / maxTime)
+            val sweepAngle = 360f * progress
             drawArc(
                 brush = Brush.linearGradient(
                     listOf(
                         progressColor.copy(alpha = 0.0f),
                         progressColor.copy(alpha = 0.2f),
-                        progressColor.copy(alpha = 1f),
-                        progressColor.copy(alpha = 1f),
+                        progressColor.copy(alpha = 0.8f),
+                        progressColor.copy(alpha = 0.85f),
                         progressColor.copy(alpha = 0.8f),
                         progressColor.copy(alpha = 0.2f),
-                        progressColor.copy(alpha = 0.0f),
                         progressColor.copy(alpha = 0.0f),
                     )
                 ),
@@ -98,9 +96,8 @@ fun TimerProgressPreview() {
             .padding(16.dp),
     ) {
 
-        TimerProgress(
-            maxTime = 30,
-            currentTime = 15,
+        ShderProgress(
+            progress = 1f,
             progressColor = Color.Blue,
             modifier = Modifier.size(50.dp)
         ) {
