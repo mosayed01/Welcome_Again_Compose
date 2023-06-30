@@ -19,19 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WelcomeComposeTheme {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                ) {
-                    ColoredTimerProgress(
-                        maxTime = 30,
-                        strokeWidth = 6.dp,
-                        modifier = Modifier.size(150.dp)
-                    )
-                }
+
             }
         }
     }
