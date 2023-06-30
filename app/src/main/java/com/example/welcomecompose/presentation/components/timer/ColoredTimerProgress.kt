@@ -12,13 +12,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -27,6 +30,7 @@ fun ColoredTimerProgress(
     modifier: Modifier = Modifier,
     strokeWidth: Dp = 2.dp,
 ) {
+    val scope = rememberCoroutineScope()
     var currentTime by remember {
         mutableStateOf(maxTime)
     }
@@ -34,15 +38,19 @@ fun ColoredTimerProgress(
         targetValue = currentTime.toFloat(),
         animationSpec = TweenSpec(1000, easing = LinearEasing), label = ""
     )
-    val color by animateColorAsState(targetValue = if (currentTime < maxTime / 2) Color.Red else Color.Green)
+    val color by animateColorAsState(targetValue = if (currentTime < maxTime / 2) Color.Red else Color.Green,
+        label = ""
+    )
 
     LaunchedEffect(key1 = Unit) {
-        while (true) {
-            if (currentTime == 0) {
-                break
+        scope.launch {
+            while (true) {
+                if (currentTime == 0) {
+                    break
+                }
+                delay(1000)
+                currentTime--
             }
-            delay(1000)
-            currentTime--
         }
     }
 

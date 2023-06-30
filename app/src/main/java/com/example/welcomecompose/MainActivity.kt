@@ -28,7 +28,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     ColoredTimerProgress(
                         maxTime = 30,
-                        modifier = Modifier.size(250.dp)
+                        strokeWidth = 6.dp,
+                        modifier = Modifier.size(150.dp)
                     )
                 }
             }
