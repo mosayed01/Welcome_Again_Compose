@@ -57,7 +57,8 @@ fun ColoredTimerProgress(
     ShderProgress(
         progress = animatedTime/maxTime,
         progressColor = color,
-        modifier = modifier
+        modifier = modifier,
+        strokeWidth = strokeWidth
     ) {
         Text(
             text = "${animatedTime.toInt()}",
