@@ -30,6 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.util.clickableIf
@@ -44,6 +45,7 @@ fun PrimaryChip(
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     isEnabled: Boolean = true,
+    fontSize: TextUnit = TextUnit.Unspecified,
     borderColor: Color = White60,
     backgroundColors: List<Color> = listOf(PrimaryLight),
     selectedTextColor: Color = OnPrimaryLight,
@@ -90,7 +92,8 @@ fun PrimaryChip(
                 text = text,
                 fontFamily = Sans,
                 fontWeight = FontWeight.Normal,
-                color = textColor
+                color = textColor,
+                fontSize = fontSize
             )
             if (moreContent != null) {
                 moreContent(this, textColor)

@@ -130,6 +130,7 @@ fun BookingScreen() {
                         unSelectedTextColor = Black87,
                         backgroundColors = listOf(DarkGray, LightGray),
                         borderColor = Black8,
+                        fontSize = 12.sp
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     PrimaryChip(
@@ -138,6 +139,7 @@ fun BookingScreen() {
                         unSelectedTextColor = Black87,
                         backgroundColors = listOf(DarkGray, LightGray),
                         borderColor = Black8,
+                        fontSize = 12.sp
                     )
                 }
 
