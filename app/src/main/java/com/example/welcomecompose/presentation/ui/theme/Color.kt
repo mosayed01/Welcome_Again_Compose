@@ -16,6 +16,18 @@ val PrimaryLight = Color(0xffff5524)
 val OnPrimaryLight = Color(0xffffffff)
 val BackgroundLight = Color(0xffffffff)
 val Gray = Color(0xff9a8d7f)
+val HidedGray = Color(0x5EFFFFFF)
+
+val Black87 = Color(0xDE121212)
+val Black60 = Color(0x99121212)
+val Black38 = Color(0x61121212)
+val Black8 = Color(0x14121212)
+
+val White87 = Color(0xDEFFFFFF)
+val White60 = Color(0x99FFFFFF)
+val White38 = Color(0x61FFFFFF)
+val White8 = Color(0x14FFFFFF)
+
 
 
 /// endregion
