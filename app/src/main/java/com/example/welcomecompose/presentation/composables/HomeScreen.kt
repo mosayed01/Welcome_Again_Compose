@@ -96,9 +96,7 @@ fun HomeScreen() {
         },
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
+            modifier = Modifier.fillMaxSize()
         ) {
             val pagerState = rememberPagerState(initialPage = 1)
             val images = listOf(
@@ -110,9 +108,10 @@ fun HomeScreen() {
             Column(
                 modifier = Modifier
                     .matchParentSize()
-                    .padding(top = 24.dp),
+                    .padding(it), // ! I couldn't use paddingValues for Scaffold
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -129,9 +128,9 @@ fun HomeScreen() {
                         modifier = Modifier.padding(horizontal = 8.dp),
                     )
                 }
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(24.dp))
                 HorizontalImages(pagerState = pagerState, images = images)
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Row(
                     modifier = Modifier.padding(4.dp),
@@ -149,7 +148,8 @@ fun HomeScreen() {
                         text = "2h 23m",
                         fontFamily = Sans,
                         fontWeight = FontWeight.Normal,
-                        color = Black87
+                        color = Black87,
+                        fontSize = 12.sp
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
@@ -162,7 +162,7 @@ fun HomeScreen() {
                     textAlign = TextAlign.Center,
                 )
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Row {
                     PrimaryChip(
@@ -171,6 +171,7 @@ fun HomeScreen() {
                         unSelectedTextColor = Black87,
                         backgroundColors = listOf(DarkGray, LightGray),
                         borderColor = Black8,
+                        fontSize = 12.sp
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     PrimaryChip(
@@ -179,6 +180,7 @@ fun HomeScreen() {
                         unSelectedTextColor = Black87,
                         backgroundColors = listOf(DarkGray, LightGray),
                         borderColor = Black8,
+                        fontSize = 12.sp
                     )
                 }
             }
@@ -237,7 +239,7 @@ fun HorizontalImages(
         modifier = modifier
     ) {
         val animatedScale by animateFloatAsState(
-            targetValue = if (it == pagerState.currentPage) 1f else 0.7f,
+            targetValue = if (it == pagerState.currentPage) 1f else 0.8f,
             animationSpec = tween(durationMillis = 300)
         )
 
