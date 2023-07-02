@@ -28,6 +28,7 @@ val White60 = Color(0x99FFFFFF)
 val White38 = Color(0x61FFFFFF)
 val White8 = Color(0x14FFFFFF)
 
-
+val DarkGray = Color(0xff93897c)
+val LightGray = Color(0xffb1a698)
 
 /// endregion

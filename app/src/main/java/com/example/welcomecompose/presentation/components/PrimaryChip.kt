@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -29,6 +30,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.welcomecompose.R
+import com.example.welcomecompose.presentation.ui.theme.Black38
+import com.example.welcomecompose.presentation.ui.theme.Black87
+import com.example.welcomecompose.presentation.ui.theme.DarkGray
+import com.example.welcomecompose.presentation.ui.theme.LightGray
 import com.example.welcomecompose.presentation.ui.theme.OnPrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.PrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.Sans
@@ -40,14 +45,14 @@ fun PrimaryChip(
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     borderColor: Color = White60,
-    backgroundColor: Color = PrimaryLight,
+    backgroundColors: List<Color> = listOf(PrimaryLight),
     selectedTextColor: Color = OnPrimaryLight,
     unSelectedTextColor: Color = OnPrimaryLight,
     doWhenSelect: () -> Unit = {},
 ) {
     var isSelectedState by remember { mutableStateOf(isSelected) }
 
-    val actualBackgroundColor = if (isSelectedState) backgroundColor else Color.Transparent
+    val actualBackgroundColors = if (isSelectedState) backgroundColors else listOf(Color.Transparent)
     val actualBorderColor = if (isSelectedState) Color.Transparent else borderColor
 
     LaunchedEffect(key1 = isSelectedState) {
@@ -61,7 +66,14 @@ fun PrimaryChip(
             .clip(CircleShape)
             .clickable { isSelectedState = !isSelectedState }
             .border(border = BorderStroke(1.dp, color = actualBorderColor), shape = CircleShape)
-            .drawBehind { drawRoundRect(actualBackgroundColor) }
+            .drawBehind {
+                if (actualBackgroundColors.size < 2) {
+                    drawRoundRect(actualBackgroundColors.first())
+                }
+                else {
+                    drawRoundRect(brush = Brush.verticalGradient(actualBackgroundColors))
+                }
+            }
             .padding(8.dp),
         contentAlignment = Alignment.Center,
     ) {
@@ -78,8 +90,7 @@ fun PrimaryChip(
 @Preview(showBackground = true)
 @Composable
 fun PrimaryChipPreview() {
-
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
         Image(
             painter = painterResource(id = R.drawable.img_2),
             contentDescription = "",
@@ -89,9 +100,16 @@ fun PrimaryChipPreview() {
                 .align(Alignment.TopCenter)
                 .blur(5.dp)
         )
-        Row {
+        Row(modifier = Modifier.align(Alignment.TopCenter)) {
             PrimaryChip(text = "Now Showing", isSelected = true)
             PrimaryChip(text = "Coming Soon", isSelected = false)
         }
+        PrimaryChip(
+            text = "10:00",
+            isSelected = true,
+            unSelectedTextColor = Black87,
+            backgroundColors = listOf(DarkGray, LightGray),
+            borderColor = Black38
+        )
     }
 }
