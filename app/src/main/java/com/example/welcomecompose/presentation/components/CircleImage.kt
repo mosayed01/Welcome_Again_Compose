@@ -19,7 +19,7 @@ fun CircleImage(
     painter: Painter,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    size: Int = 50
+    size: Int = 65
 ) {
     Image(
         painter = painter,

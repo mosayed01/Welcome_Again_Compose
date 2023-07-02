@@ -33,11 +33,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.welcomecompose.R
-import com.example.welcomecompose.presentation.ui.theme.Black38
-import com.example.welcomecompose.presentation.ui.theme.Black8
-import com.example.welcomecompose.presentation.ui.theme.Black87
-import com.example.welcomecompose.presentation.ui.theme.DarkGray
-import com.example.welcomecompose.presentation.ui.theme.LightGray
 import com.example.welcomecompose.presentation.ui.theme.OnPrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.PrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.Sans
@@ -48,6 +43,7 @@ fun PrimaryChip(
     text: String,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
+    isEnabled: Boolean = true,
     borderColor: Color = White60,
     backgroundColors: List<Color> = listOf(PrimaryLight),
     selectedTextColor: Color = OnPrimaryLight,
@@ -55,7 +51,7 @@ fun PrimaryChip(
     doWhenSelect: () -> Unit = {},
     moreContent: (@Composable ColumnScope.(Color) -> Unit)? = null
 ) {
-    var isSelectedState by remember { mutableStateOf(isSelected) }
+    var isSelectedState by remember { mutableStateOf(isSelected && isEnabled) }
 
     val actualBackgroundColors =
         if (isSelectedState) backgroundColors else listOf(Color.Transparent)
@@ -71,7 +67,14 @@ fun PrimaryChip(
     Box(
         modifier = Modifier
             .clip(shape = shape)
-            .clickable { isSelectedState = !isSelectedState }
+            .clickable {
+                if (isEnabled) {
+                    isSelectedState = !isSelectedState
+                }
+                else {
+                    Unit
+                }
+            }
             .border(border = BorderStroke(1.dp, color = actualBorderColor), shape = shape)
             .drawBehind {
                 if (actualBackgroundColors.size < 2) {
@@ -116,8 +119,8 @@ fun PrimaryChipPreview() {
                 .blur(5.dp)
         )
         Row(modifier = Modifier.align(Alignment.TopCenter)) {
-            PrimaryChip(text = "Now Showing", isSelected = true)
-            PrimaryChip(text = "Coming Soon", isSelected = false)
+            PrimaryChip(text = "Now Showing", isSelected = true, isEnabled = true)
+            PrimaryChip(text = "Coming Soon", isSelected = false, isEnabled = true)
         }
     }
 }

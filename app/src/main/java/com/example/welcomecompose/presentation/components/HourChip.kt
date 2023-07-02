@@ -10,8 +10,8 @@ import com.example.welcomecompose.presentation.ui.theme.LightGray
 @Composable
 fun HourChip(
     hour: String,
+    modifier: Modifier = Modifier,
     isSelected: Boolean = false,
-    modifier: Modifier = Modifier
 ) {
     PrimaryChip(
         text = hour,
