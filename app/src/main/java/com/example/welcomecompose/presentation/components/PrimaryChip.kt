@@ -5,11 +5,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.ui.theme.Black38
+import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87
 import com.example.welcomecompose.presentation.ui.theme.DarkGray
 import com.example.welcomecompose.presentation.ui.theme.LightGray
@@ -49,11 +53,14 @@ fun PrimaryChip(
     selectedTextColor: Color = OnPrimaryLight,
     unSelectedTextColor: Color = OnPrimaryLight,
     doWhenSelect: () -> Unit = {},
+    moreContent: (@Composable ColumnScope.(Color) -> Unit)? = null
 ) {
     var isSelectedState by remember { mutableStateOf(isSelected) }
 
-    val actualBackgroundColors = if (isSelectedState) backgroundColors else listOf(Color.Transparent)
+    val actualBackgroundColors =
+        if (isSelectedState) backgroundColors else listOf(Color.Transparent)
     val actualBorderColor = if (isSelectedState) Color.Transparent else borderColor
+    val shape = if (moreContent == null) CircleShape else RoundedCornerShape(40)
 
     LaunchedEffect(key1 = isSelectedState) {
         if (isSelectedState) {
@@ -62,27 +69,35 @@ fun PrimaryChip(
     }
 
     Box(
-        modifier = modifier
-            .clip(CircleShape)
+        modifier = Modifier
+            .clip(shape = shape)
             .clickable { isSelectedState = !isSelectedState }
-            .border(border = BorderStroke(1.dp, color = actualBorderColor), shape = CircleShape)
+            .border(border = BorderStroke(1.dp, color = actualBorderColor), shape = shape)
             .drawBehind {
                 if (actualBackgroundColors.size < 2) {
                     drawRoundRect(actualBackgroundColors.first())
-                }
-                else {
+                } else {
                     drawRoundRect(brush = Brush.verticalGradient(actualBackgroundColors))
                 }
             }
             .padding(8.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(
-            text = text,
-            fontFamily = Sans,
-            fontWeight = FontWeight.Normal,
-            color = if (isSelectedState) selectedTextColor else unSelectedTextColor
-        )
+        Column(
+            modifier = modifier,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            val textColor = if (isSelectedState) selectedTextColor else unSelectedTextColor
+            Text(
+                text = text,
+                fontFamily = Sans,
+                fontWeight = FontWeight.Normal,
+                color = textColor
+            )
+            if (moreContent != null) {
+                moreContent(this, textColor)
+            }
+        }
     }
 }
 
@@ -104,12 +119,5 @@ fun PrimaryChipPreview() {
             PrimaryChip(text = "Now Showing", isSelected = true)
             PrimaryChip(text = "Coming Soon", isSelected = false)
         }
-        PrimaryChip(
-            text = "10:00",
-            isSelected = true,
-            unSelectedTextColor = Black87,
-            backgroundColors = listOf(DarkGray, LightGray),
-            borderColor = Black38
-        )
     }
 }
