@@ -95,7 +95,7 @@ fun BuyTicketsScreen() {
             painter = painterResource(id = R.drawable.background),
             contentDescription = "",
             modifier = Modifier
-                .graphicsLayer { rotationX = -45f }
+                .graphicsLayer { rotationX = -50f }
                 .constrainAs(image) {
                     top.linkTo(xIcon.bottom, (-8).dp)
                 }
