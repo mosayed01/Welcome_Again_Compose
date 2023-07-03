@@ -1,5 +1,7 @@
 package com.example.welcomecompose.presentation.screens
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -63,7 +65,9 @@ import com.example.welcomecompose.presentation.ui.theme.OnPrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.PrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.Sans
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+)
 @Composable
 fun HomeScreen() {
     Scaffold(
@@ -86,10 +90,8 @@ fun HomeScreen() {
                         modifier = Modifier
                             .size(18.dp)
                             .clip(CircleShape)
-                            .background(PrimaryLight)
-                        ,
-
-                    )
+                            .background(PrimaryLight),
+                        )
                 }
                 NavigationItem(painter = painterResource(id = R.drawable.user))
             }
@@ -104,7 +106,12 @@ fun HomeScreen() {
                 R.drawable.img_3,
                 R.drawable.img_2,
             )
-            BackgroundWithBlurredImage(painter = painterResource(id = images[pagerState.currentPage]))
+            Crossfade(
+                targetState = images[pagerState.currentPage],
+                animationSpec = tween(200, easing = FastOutSlowInEasing),
+            ) {
+                BackgroundWithBlurredImage(painter = painterResource(id = it))
+            }
             Column(
                 modifier = Modifier
                     .matchParentSize()
@@ -239,8 +246,8 @@ fun HorizontalImages(
         modifier = modifier
     ) {
         val animatedScale by animateFloatAsState(
-            targetValue = if (it == pagerState.currentPage) 1f else 0.8f,
-            animationSpec = tween(durationMillis = 300)
+            targetValue = if (it == pagerState.currentPage) 1f else 0.9f,
+            animationSpec = tween(durationMillis = 200)
         )
 
         Image(
@@ -249,7 +256,7 @@ fun HorizontalImages(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .aspectRatio(3 / 4f)
-                .scale(scaleY = animatedScale, scaleX = 1f)
+                .scale(animatedScale)
                 .clip(MaterialTheme.shapes.extraLarge)
         )
     }
@@ -293,9 +300,8 @@ fun BackgroundWithBlurredImage(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.5f)
-                .blur(25.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+                .blur(radius = 50.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
         )
-
     }
 }
 
