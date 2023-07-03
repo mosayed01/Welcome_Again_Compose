@@ -69,4 +69,5 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 
     implementation("androidx.compose.material:material:1.4.3")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 }

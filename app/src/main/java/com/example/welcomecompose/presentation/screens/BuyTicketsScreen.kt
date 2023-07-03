@@ -8,13 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -44,6 +42,8 @@ import com.example.welcomecompose.presentation.composables.HourChip
 import com.example.welcomecompose.presentation.composables.PrimaryButton
 import com.example.welcomecompose.presentation.composables.RowOfPairOfChairs
 import com.example.welcomecompose.presentation.composables.ui_models.ChairState
+import com.example.welcomecompose.presentation.screens.util.Space
+import com.example.welcomecompose.presentation.screens.util.WeightedSpacer
 import com.example.welcomecompose.presentation.ui.theme.Black60
 import com.example.welcomecompose.presentation.ui.theme.Black87
 import com.example.welcomecompose.presentation.ui.theme.DarkGray
@@ -150,7 +150,7 @@ fun BuyTicketsScreen() {
                 }
             )
             /// endregion
-            Spacer(modifier = Modifier.weight(9f))
+            Space(space = 9)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -161,7 +161,7 @@ fun BuyTicketsScreen() {
                 SelectedRadioItem(chairState = ChairState.Taken)
                 SelectedRadioItem(chairState = ChairState.Selected)
             }
-            Spacer(modifier = Modifier.weight(1f))
+            WeightedSpacer(weight = 1f)
         }
         Surface(
             modifier = Modifier
@@ -175,7 +175,7 @@ fun BuyTicketsScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Space(space = 16)
 
                 val days = listOf(
                     Day(14, "Thu"),
@@ -196,7 +196,7 @@ fun BuyTicketsScreen() {
                     items(days) { DateChip(it, isSelected = it.dayNumber == 17) }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Space(space = 16)
 
                 val timeList = listOf(
                     "10:00",
@@ -218,7 +218,7 @@ fun BuyTicketsScreen() {
                     }
                 }
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Space(space = 32)
 
                 Row(
                     modifier = Modifier
@@ -280,7 +280,7 @@ fun SelectedRadioItem(
                 .clip(CircleShape)
                 .background(color)
         )
-        Spacer(modifier = Modifier.width(8.dp))
+        Space(space = 8)
         Text(
             text = name,
             fontFamily = Sans,
