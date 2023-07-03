@@ -8,15 +8,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -45,6 +43,7 @@ import com.example.welcomecompose.presentation.composables.BlurredCard
 import com.example.welcomecompose.presentation.composables.CircleImage
 import com.example.welcomecompose.presentation.composables.PrimaryButton
 import com.example.welcomecompose.presentation.composables.PrimaryChip
+import com.example.welcomecompose.presentation.screens.util.Space
 import com.example.welcomecompose.presentation.ui.theme.Black38
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87
@@ -61,7 +60,7 @@ import kotlin.math.roundToInt
 fun BookingScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(id = R.drawable.img_2),
+            painter = painterResource(id = R.drawable.img_1),
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxWidth()
@@ -71,109 +70,125 @@ fun BookingScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Header()
-            Spacer(modifier = Modifier.height(125.dp)) // ! Bad practice
+            Space(space = 125) // ! bad practice
             StartButton()
         }
-
         Surface(
             modifier = Modifier
                 .clip(RoundedCornerShape(topStartPercent = 10, topEndPercent = 10))
                 .fillMaxWidth()
-                .fillMaxHeight(0.53f)
                 .align(Alignment.BottomCenter),
         ) {
-            Column(
-                modifier = Modifier.padding(vertical = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceAround,
-                ) {
-                    ItemRate(rateOfTen = 6.8f, type = "IMDp")
+            val images = listOf(
+                R.drawable.img,
+                R.drawable.img_1,
+                R.drawable.img_5,
+                R.drawable.img_2,
+                R.drawable.img_3,
+                R.drawable.img_2,
+                R.drawable.img_5,
+                R.drawable.background,
+            )
+            MovieContent(images)
+        }
+    }
+}
 
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "63%",
-                            fontFamily = Sans,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 16.sp
-                        )
-                        Text(
-                            text = "Rotten Tomatoes",
-                            color = Black38,
-                            fontFamily = Sans,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 14.sp
-                        )
-                    }
+@Composable
+fun MovieContent(
+    images: List<Int>
+) {
+    Column(
+        modifier = Modifier.padding(vertical = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+        ) {
+            ItemRate(rateOfTen = 6.8f, type = "IMDp")
 
-                    ItemRate(rateOfTen = 4f, type = "IGN")
-                }
-                Spacer(modifier = Modifier.height(16.dp))
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Fantastic Beasts: The \nSecrets of Dumbledore",
-                    color = Black87,
-                    fontSize = 16.sp,
+                    text = "63%",
                     fontFamily = Sans,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row {
-                    PrimaryChip(
-                        text = "Fantasy",
-                        isEnabled = false,
-                        unSelectedTextColor = Black87,
-                        backgroundColors = listOf(DarkGray, LightGray),
-                        borderColor = Black8,
-                        fontSize = 12.sp
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    PrimaryChip(
-                        text = "Adventure",
-                        isEnabled = false,
-                        unSelectedTextColor = Black87,
-                        backgroundColors = listOf(DarkGray, LightGray),
-                        borderColor = Black8,
-                        fontSize = 12.sp
-                    )
-                }
-
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    items(count = 10) {
-                        CircleImage(
-                            painter = painterResource(id = R.drawable.img_2),
-                            onClick = { /*TODO*/ })
-                    }
-                }
                 Text(
-                    text = "Professor Albus Dumbledore knows the powerful," +
-                            "dark wizard Gellert Grindelwald is moving to seize" +
-                            "control of the wizarding world. Unable to stop him...",
-                    color = Black87,
-                    fontSize = 16.sp,
+                    text = "Rotten Tomatoes",
+                    color = Black38,
                     fontFamily = Sans,
-                    fontWeight = FontWeight.Normal,
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    textAlign = TextAlign.Center,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp
                 )
-                Spacer(modifier = Modifier.weight(1f))
-                PrimaryButton(
-                    painter = painterResource(id = R.drawable.card),
-                    onClick = { /*TODO*/ },
-                    text = "Booking",
-                    modifier = Modifier.height(56.dp),
+            }
+
+            ItemRate(rateOfTen = 4f, type = "IGN")
+        }
+        Space(space = 16)
+        Text(
+            text = "Fantastic Beasts: The \nSecrets of Dumbledore",
+            color = Black87,
+            fontSize = 16.sp,
+            fontFamily = Sans,
+            fontWeight = FontWeight.Medium
+        )
+        Space(space = 8)
+        Row {
+            PrimaryChip(
+                text = "Fantasy",
+                isEnabled = false,
+                unSelectedTextColor = Black87,
+                backgroundColors = listOf(DarkGray, LightGray),
+                borderColor = Black8,
+                fontSize = 12.sp
+            )
+            Space(space = 4)
+            PrimaryChip(
+                text = "Adventure",
+                isEnabled = false,
+                unSelectedTextColor = Black87,
+                backgroundColors = listOf(DarkGray, LightGray),
+                borderColor = Black8,
+                fontSize = 12.sp
+            )
+        }
+
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            items(images) {
+                CircleImage(
+                    painter = painterResource(id = it),
+                    onClick = { /*TODO*/ }
                 )
             }
         }
+        Text(
+            text = "Professor Albus Dumbledore knows the powerful," +
+                    "dark wizard Gellert Grindelwald is moving to seize" +
+                    "control of the wizarding world. Unable to stop him...",
+            color = Black87,
+            fontSize = 16.sp,
+            fontFamily = Sans,
+            fontWeight = FontWeight.Normal,
+            modifier = Modifier.padding(horizontal = 16.dp),
+            textAlign = TextAlign.Center,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis
+        )
+        Space(space = 32)
+        PrimaryButton(
+            painter = painterResource(id = R.drawable.card),
+            onClick = { /*TODO*/ },
+            text = "Booking",
+            modifier = Modifier.height(56.dp),
+        )
     }
 }
 
@@ -277,7 +292,7 @@ fun Header() {
                     tint = White38,
                     modifier = Modifier.size(16.dp),
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Space(space = 4)
                 Text(
                     text = "2h 23m",
                     fontSize = 12.sp,
