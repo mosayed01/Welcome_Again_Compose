@@ -23,7 +23,7 @@ fun RowOfPairOfChairs(
         repeat(pairList.size) {
             PairChairs(
                 pair = pairList[it],
-                size = 48,
+                size = 35,
                 modifier = Modifier.graphicsLayer {
                     val rotateDegree = if (it == 0) 10f else if (it == 1) 0f else -10f
                     val translatedY = if (it==1) 30f else 0f

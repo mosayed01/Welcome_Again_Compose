@@ -31,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,6 +42,7 @@ import com.example.welcomecompose.presentation.composables.DateChip
 import com.example.welcomecompose.presentation.composables.Day
 import com.example.welcomecompose.presentation.composables.HourChip
 import com.example.welcomecompose.presentation.composables.PrimaryButton
+import com.example.welcomecompose.presentation.composables.RowOfPairOfChairs
 import com.example.welcomecompose.presentation.composables.ui_models.ChairState
 import com.example.welcomecompose.presentation.ui.theme.Black60
 import com.example.welcomecompose.presentation.ui.theme.Black87
@@ -88,19 +88,70 @@ fun BuyTicketsScreen() {
             Image(
                 painter = painterResource(id = R.drawable.background),
                 contentDescription = "",
-                modifier = Modifier
-                    .graphicsLayer { rotationX = -50f }
+                modifier = Modifier.graphicsLayer { rotationX = -50f }
             )
 
-            Image(
-                painter = painterResource(id = R.drawable.img_5),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth()
+            /// region chairs
+            RowOfPairOfChairs(
+                pairList = listOf(
+                    Pair(ChairState.Available, ChairState.Available),
+                    Pair(ChairState.Available, ChairState.Available),
+                    Pair(ChairState.Taken, ChairState.Available),
+                ),
+                modifier = Modifier.graphicsLayer {
+                    translationY = -80f
+                }
             )
+
+            RowOfPairOfChairs(
+                pairList = listOf(
+                    Pair(ChairState.Available, ChairState.Available),
+                    Pair(ChairState.Selected, ChairState.Selected),
+                    Pair(ChairState.Available, ChairState.Available),
+                ),
+                modifier = Modifier.graphicsLayer {
+                    translationY = -200f
+                }
+            )
+
+            RowOfPairOfChairs(
+                pairList = listOf(
+                    Pair(ChairState.Taken, ChairState.Available),
+                    Pair(ChairState.Selected, ChairState.Selected),
+                    Pair(ChairState.Taken, ChairState.Taken),
+                ),
+                modifier = Modifier.graphicsLayer {
+                    translationY = -345f
+                }
+            )
+
+            RowOfPairOfChairs(
+                pairList = listOf(
+                    Pair(ChairState.Available, ChairState.Available),
+                    Pair(ChairState.Taken, ChairState.Taken),
+                    Pair(ChairState.Available, ChairState.Available),
+                ),
+                modifier = Modifier.graphicsLayer {
+                    translationY = -470f
+                }
+            )
+
+            RowOfPairOfChairs(
+                pairList = listOf(
+                    Pair(ChairState.Taken, ChairState.Taken),
+                    Pair(ChairState.Taken, ChairState.Taken),
+                    Pair(ChairState.Available, ChairState.Available),
+                ),
+                modifier = Modifier.graphicsLayer {
+                    translationY = -600f
+                }
+            )
+            /// endregion
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .graphicsLayer { translationY = -610f },
                 horizontalArrangement = Arrangement.SpaceAround,
             ) {
                 SelectedRadioItem(chairState = ChairState.Available)
@@ -178,14 +229,14 @@ fun BuyTicketsScreen() {
                             fontFamily = Sans,
                             fontWeight = FontWeight.Bold,
                             color = Black87,
-                            )
+                        )
                         Text(
                             text = "4 tickets",
                             fontSize = 11.sp,
                             fontFamily = Sans,
                             fontWeight = FontWeight.Normal,
                             color = Black60
-                            )
+                        )
 
                     }
                     PrimaryButton(
