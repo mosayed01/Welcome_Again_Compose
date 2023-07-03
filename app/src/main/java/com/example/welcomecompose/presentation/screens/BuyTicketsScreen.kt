@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables
+package com.example.welcomecompose.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,11 +38,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.welcomecompose.R
-import com.example.welcomecompose.presentation.composables.components.BlurredCard
-import com.example.welcomecompose.presentation.composables.components.DateChip
-import com.example.welcomecompose.presentation.composables.components.Day
-import com.example.welcomecompose.presentation.composables.components.HourChip
-import com.example.welcomecompose.presentation.composables.components.PrimaryButton
+import com.example.welcomecompose.presentation.composables.BlurredCard
+import com.example.welcomecompose.presentation.composables.DateChip
+import com.example.welcomecompose.presentation.composables.Day
+import com.example.welcomecompose.presentation.composables.HourChip
+import com.example.welcomecompose.presentation.composables.PrimaryButton
+import com.example.welcomecompose.presentation.composables.ui_models.ChairState
 import com.example.welcomecompose.presentation.ui.theme.Black60
 import com.example.welcomecompose.presentation.ui.theme.Black87
 import com.example.welcomecompose.presentation.ui.theme.DarkGray
@@ -102,9 +103,9 @@ fun BuyTicketsScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround,
             ) {
-                SelectedRadioItem(state = State.Available)
-                SelectedRadioItem(state = State.Taken)
-                SelectedRadioItem(state = State.Selected)
+                SelectedRadioItem(chairState = ChairState.Available)
+                SelectedRadioItem(chairState = ChairState.Taken)
+                SelectedRadioItem(chairState = ChairState.Selected)
             }
         }
         Surface(
@@ -204,17 +205,17 @@ fun BuyTicketsScreen() {
 
 @Composable
 fun SelectedRadioItem(
-    state: State
+    chairState: ChairState
 ) {
-    val name = when (state) {
-        State.Available -> "Available"
-        State.Taken -> "Taken"
-        State.Selected -> "Selected"
+    val name = when (chairState) {
+        ChairState.Available -> "Available"
+        ChairState.Taken -> "Taken"
+        ChairState.Selected -> "Selected"
     }
-    val color = when (state) {
-        State.Available -> White87
-        State.Taken -> DarkGray
-        State.Selected -> PrimaryLight
+    val color = when (chairState) {
+        ChairState.Available -> White87
+        ChairState.Taken -> DarkGray
+        ChairState.Selected -> PrimaryLight
     }
 
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -234,12 +235,6 @@ fun SelectedRadioItem(
         )
     }
 
-}
-
-enum class State {
-    Available,
-    Taken,
-    Selected
 }
 
 @Preview(showBackground = true, showSystemUi = true)

@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables.components
+package com.example.welcomecompose.presentation.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

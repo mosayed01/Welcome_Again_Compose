@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables.components.timer
+package com.example.welcomecompose.presentation.composables.timer
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing

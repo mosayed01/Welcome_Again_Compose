@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables
+package com.example.welcomecompose.presentation.screens
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -53,7 +53,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.welcomecompose.R
-import com.example.welcomecompose.presentation.composables.components.PrimaryChip
+import com.example.welcomecompose.presentation.composables.PrimaryChip
 import com.example.welcomecompose.presentation.ui.theme.Black38
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87

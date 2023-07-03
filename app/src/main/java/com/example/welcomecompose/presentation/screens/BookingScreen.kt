@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables
+package com.example.welcomecompose.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,7 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -42,10 +41,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.welcomecompose.R
-import com.example.welcomecompose.presentation.composables.components.BlurredCard
-import com.example.welcomecompose.presentation.composables.components.CircleImage
-import com.example.welcomecompose.presentation.composables.components.PrimaryButton
-import com.example.welcomecompose.presentation.composables.components.PrimaryChip
+import com.example.welcomecompose.presentation.composables.BlurredCard
+import com.example.welcomecompose.presentation.composables.CircleImage
+import com.example.welcomecompose.presentation.composables.PrimaryButton
+import com.example.welcomecompose.presentation.composables.PrimaryChip
 import com.example.welcomecompose.presentation.ui.theme.Black38
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87
@@ -58,7 +57,6 @@ import com.example.welcomecompose.presentation.ui.theme.White38
 import com.example.welcomecompose.presentation.ui.theme.White60
 import kotlin.math.roundToInt
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookingScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -282,6 +280,7 @@ fun Header() {
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "2h 23m",
+                    fontSize = 12.sp,
                     fontFamily = Sans,
                     fontWeight = FontWeight.Normal,
                     color = White60

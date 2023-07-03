@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables.components
+package com.example.welcomecompose.presentation.composables
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.welcomecompose.R
-import com.example.welcomecompose.presentation.composables.util.clickableIf
+import com.example.welcomecompose.presentation.screens.util.clickableIf
 import com.example.welcomecompose.presentation.ui.theme.OnPrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.PrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.Sans

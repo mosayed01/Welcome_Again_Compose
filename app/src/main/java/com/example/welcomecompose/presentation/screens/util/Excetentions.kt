@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables.util
+package com.example.welcomecompose.presentation.screens.util
 
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.Modifier

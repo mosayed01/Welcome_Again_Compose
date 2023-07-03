@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables.components
+package com.example.welcomecompose.presentation.composables
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text

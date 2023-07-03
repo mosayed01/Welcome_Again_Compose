@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables.components.timer
+package com.example.welcomecompose.presentation.composables.timer
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
