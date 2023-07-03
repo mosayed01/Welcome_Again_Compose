@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -34,6 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintLayoutScope
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.BlurredCard
 import com.example.welcomecompose.presentation.composables.DateChip
@@ -43,7 +44,6 @@ import com.example.welcomecompose.presentation.composables.PrimaryButton
 import com.example.welcomecompose.presentation.composables.RowOfPairOfChairs
 import com.example.welcomecompose.presentation.composables.ui_models.ChairState
 import com.example.welcomecompose.presentation.screens.util.Space
-import com.example.welcomecompose.presentation.screens.util.WeightedSpacer
 import com.example.welcomecompose.presentation.ui.theme.Black60
 import com.example.welcomecompose.presentation.ui.theme.Black87
 import com.example.welcomecompose.presentation.ui.theme.DarkGray
@@ -55,16 +55,19 @@ import com.example.welcomecompose.presentation.ui.theme.White87
 
 @Composable
 fun BuyTicketsScreen() {
-    Box(
+    ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-        ) {
+        val (xIcon, image, rowChairs1,
+            rowChairs2, rowChairs3, rowChairs4,
+            rowChairs5, information, bottomSheet) = createRefs()
+
+        Box(modifier = Modifier.constrainAs(xIcon) {
+            start.linkTo(parent.start, 16.dp)
+            top.linkTo(parent.top, 16.dp)
+        }) {
             BlurredCard(
                 onClick = { /*TODO*/ },
                 modifier = Modifier.padding(8.dp)
@@ -87,172 +90,190 @@ fun BuyTicketsScreen() {
                     )
                 }
             }
+        }
 
-            Image(
-                painter = painterResource(id = R.drawable.background),
-                contentDescription = "",
-                modifier = Modifier.graphicsLayer { rotationX = -50f }
-            )
-
-            /// region chairs
-            RowOfPairOfChairs(
-                pairList = listOf(
-                    Pair(ChairState.Available, ChairState.Available),
-                    Pair(ChairState.Available, ChairState.Available),
-                    Pair(ChairState.Taken, ChairState.Available),
-                ),
-                modifier = Modifier.graphicsLayer {
-                    translationY = -80f
+        Image(
+            painter = painterResource(id = R.drawable.background),
+            contentDescription = "",
+            modifier = Modifier
+                .graphicsLayer { rotationX = -50f }
+                .constrainAs(image) {
+                    top.linkTo(xIcon.bottom, (-8).dp)
                 }
+        )
+        val gap = 40
+
+        /// region chairs
+        RowOfPairOfChairs(
+            pairList = listOf(
+                Pair(ChairState.Available, ChairState.Available),
+                Pair(ChairState.Available, ChairState.Available),
+                Pair(ChairState.Taken, ChairState.Available),
+            ),
+            modifier = Modifier.constrainAs(rowChairs1) {
+                top.linkTo(image.bottom, (-gap).dp)
+            }
+        )
+
+        RowOfPairOfChairs(
+            pairList = listOf(
+                Pair(ChairState.Available, ChairState.Available),
+                Pair(ChairState.Selected, ChairState.Selected),
+                Pair(ChairState.Available, ChairState.Available),
+            ),
+            modifier = Modifier.constrainAs(rowChairs2) {
+                top.linkTo(rowChairs1.bottom, (-gap).dp)
+            }
+        )
+
+        RowOfPairOfChairs(
+            pairList = listOf(
+                Pair(ChairState.Taken, ChairState.Available),
+                Pair(ChairState.Selected, ChairState.Selected),
+                Pair(ChairState.Taken, ChairState.Taken),
+            ),
+            modifier = Modifier.constrainAs(rowChairs3) {
+                top.linkTo(rowChairs2.bottom, (-gap).dp)
+            }
+        )
+
+        RowOfPairOfChairs(
+            pairList = listOf(
+                Pair(ChairState.Available, ChairState.Available),
+                Pair(ChairState.Taken, ChairState.Taken),
+                Pair(ChairState.Available, ChairState.Available),
+            ),
+            modifier = Modifier.constrainAs(rowChairs4) {
+                top.linkTo(rowChairs3.bottom, (-gap).dp)
+            }
+        )
+        RowOfPairOfChairs(
+            pairList = listOf(
+                Pair(ChairState.Taken, ChairState.Taken),
+                Pair(ChairState.Taken, ChairState.Taken),
+                Pair(ChairState.Available, ChairState.Available),
+            ),
+            modifier = Modifier.constrainAs(rowChairs5) {
+                top.linkTo(rowChairs4.bottom, (-gap).dp)
+            }
+        )
+        /// endregion
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(information) {
+                    top.linkTo(rowChairs5.bottom)
+                    bottom.linkTo(bottomSheet.top)
+                },
+            horizontalArrangement = Arrangement.SpaceAround,
+        ) {
+            SelectedRadioItem(chairState = ChairState.Available)
+            SelectedRadioItem(chairState = ChairState.Taken)
+            SelectedRadioItem(chairState = ChairState.Selected)
+        }
+
+        BottomSheet(modifier = Modifier.constrainAs(bottomSheet) {
+            bottom.linkTo(parent.bottom)
+            top.linkTo(information.bottom)
+        })
+
+    }
+
+
+}
+
+@Composable
+fun ConstraintLayoutScope.BottomSheet(
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier
+            .clip(RoundedCornerShape(topStartPercent = 10, topEndPercent = 10))
+            .fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(vertical = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Space(space = 16)
+
+            val days = listOf(
+                Day(14, "Thu"),
+                Day(15, "Fri"),
+                Day(16, "Sat"),
+                Day(17, "Sun"),
+                Day(18, "Mon"),
+                Day(19, "Tue"),
+                Day(20, "Tue"),
+                Day(21, "Tue"),
+                Day(22, "Tue"),
+            )
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                items(days) { DateChip(it, isSelected = it.dayNumber == 17) }
+            }
+
+            Space(space = 16)
+
+            val timeList = listOf(
+                "10:00",
+                "12:30",
+                "15:30",
+                "18:00",
+                "18:30",
+                "19:00",
+                "20:00",
             )
 
-            RowOfPairOfChairs(
-                pairList = listOf(
-                    Pair(ChairState.Available, ChairState.Available),
-                    Pair(ChairState.Selected, ChairState.Selected),
-                    Pair(ChairState.Available, ChairState.Available),
-                ),
-                modifier = Modifier.graphicsLayer {
-                    translationY = -200f
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                items(timeList) {
+                    HourChip(it, isSelected = it == "10:00")
                 }
-            )
+            }
 
-            RowOfPairOfChairs(
-                pairList = listOf(
-                    Pair(ChairState.Taken, ChairState.Available),
-                    Pair(ChairState.Selected, ChairState.Selected),
-                    Pair(ChairState.Taken, ChairState.Taken),
-                ),
-                modifier = Modifier.graphicsLayer {
-                    translationY = -345f
-                }
-            )
+            Space(space = 32)
 
-            RowOfPairOfChairs(
-                pairList = listOf(
-                    Pair(ChairState.Available, ChairState.Available),
-                    Pair(ChairState.Taken, ChairState.Taken),
-                    Pair(ChairState.Available, ChairState.Available),
-                ),
-                modifier = Modifier.graphicsLayer {
-                    translationY = -470f
-                }
-            )
-
-            RowOfPairOfChairs(
-                pairList = listOf(
-                    Pair(ChairState.Taken, ChairState.Taken),
-                    Pair(ChairState.Taken, ChairState.Taken),
-                    Pair(ChairState.Available, ChairState.Available),
-                ),
-                modifier = Modifier.graphicsLayer {
-                    translationY = -600f
-                }
-            )
-            /// endregion
-            Space(space = 9)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .graphicsLayer { translationY = -610f },
-                horizontalArrangement = Arrangement.SpaceAround,
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                SelectedRadioItem(chairState = ChairState.Available)
-                SelectedRadioItem(chairState = ChairState.Taken)
-                SelectedRadioItem(chairState = ChairState.Selected)
-            }
-            WeightedSpacer(weight = 1f)
-        }
-        Surface(
-            modifier = Modifier
-                .clip(RoundedCornerShape(topStartPercent = 10, topEndPercent = 10))
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .align(Alignment.BottomCenter),
-        ) {
-            Column(
-                modifier = Modifier.padding(vertical = 8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                Space(space = 16)
-
-                val days = listOf(
-                    Day(14, "Thu"),
-                    Day(15, "Fri"),
-                    Day(16, "Sat"),
-                    Day(17, "Sun"),
-                    Day(18, "Mon"),
-                    Day(19, "Tue"),
-                    Day(20, "Tue"),
-                    Day(21, "Tue"),
-                    Day(22, "Tue"),
-                )
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    items(days) { DateChip(it, isSelected = it.dayNumber == 17) }
-                }
-
-                Space(space = 16)
-
-                val timeList = listOf(
-                    "10:00",
-                    "12:30",
-                    "15:30",
-                    "18:00",
-                    "18:30",
-                    "19:00",
-                    "20:00",
-                )
-
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    items(timeList) {
-                        HourChip(it, isSelected = it == "10:00")
-                    }
-                }
-
-                Space(space = 32)
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column(horizontalAlignment = Alignment.Start) {
-                        Text(
-                            text = "$100.00",
-                            fontSize = 24.sp,
-                            fontFamily = Sans,
-                            fontWeight = FontWeight.Bold,
-                            color = Black87,
-                        )
-                        Text(
-                            text = "4 tickets",
-                            fontSize = 11.sp,
-                            fontFamily = Sans,
-                            fontWeight = FontWeight.Normal,
-                            color = Black60
-                        )
-
-                    }
-                    PrimaryButton(
-                        painter = painterResource(id = R.drawable.card),
-                        onClick = { /*TODO*/ },
-                        text = "Buy Tickets",
-                        modifier = Modifier.height(56.dp),
+                Column(horizontalAlignment = Alignment.Start) {
+                    Text(
+                        text = "$100.00",
+                        fontSize = 24.sp,
+                        fontFamily = Sans,
+                        fontWeight = FontWeight.Bold,
+                        color = Black87,
+                    )
+                    Text(
+                        text = "4 tickets",
+                        fontSize = 11.sp,
+                        fontFamily = Sans,
+                        fontWeight = FontWeight.Normal,
+                        color = Black60
                     )
 
                 }
+                PrimaryButton(
+                    painter = painterResource(id = R.drawable.card),
+                    onClick = { /*TODO*/ },
+                    text = "Buy Tickets",
+                    modifier = Modifier.height(56.dp),
+                )
 
             }
+
         }
     }
 }
@@ -289,7 +310,6 @@ fun SelectedRadioItem(
             fontSize = 14.sp
         )
     }
-
 }
 
 @Preview(showBackground = true, showSystemUi = true, device = "id:pixel_3a_xl")
