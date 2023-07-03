@@ -55,11 +55,14 @@ import com.example.welcomecompose.presentation.ui.theme.White87
 
 @Composable
 fun BuyTicketsScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+    ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black)
+                .fillMaxWidth()
                 .padding(16.dp),
         ) {
             BlurredCard(
@@ -147,7 +150,7 @@ fun BuyTicketsScreen() {
                 }
             )
             /// endregion
-
+            Spacer(modifier = Modifier.weight(9f))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -158,6 +161,7 @@ fun BuyTicketsScreen() {
                 SelectedRadioItem(chairState = ChairState.Taken)
                 SelectedRadioItem(chairState = ChairState.Selected)
             }
+            Spacer(modifier = Modifier.weight(1f))
         }
         Surface(
             modifier = Modifier
@@ -167,7 +171,7 @@ fun BuyTicketsScreen() {
                 .align(Alignment.BottomCenter),
         ) {
             Column(
-                modifier = Modifier.padding(vertical = 16.dp),
+                modifier = Modifier.padding(vertical = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -288,7 +292,7 @@ fun SelectedRadioItem(
 
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, device = "id:pixel_3a_xl")
 @Composable
 fun BuyTicketsScreenPrev() {
     BuyTicketsScreen()
