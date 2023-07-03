@@ -95,12 +95,12 @@ fun BuyTicketsScreen() {
             painter = painterResource(id = R.drawable.background),
             contentDescription = "",
             modifier = Modifier
-                .graphicsLayer { rotationX = -50f }
+                .graphicsLayer { rotationX = -45f }
                 .constrainAs(image) {
                     top.linkTo(xIcon.bottom, (-8).dp)
                 }
         )
-        val gap = 40
+        val gap = 50
 
         /// region chairs
         RowOfPairOfChairs(
