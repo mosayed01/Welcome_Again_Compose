@@ -34,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintLayoutScope
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.BlurredCard
 import com.example.welcomecompose.presentation.composables.DateChip
@@ -184,7 +183,7 @@ fun BuyTicketsScreen() {
 }
 
 @Composable
-fun ConstraintLayoutScope.BottomSheet(
+fun BottomSheet(
     modifier: Modifier = Modifier
 ) {
     Surface(
