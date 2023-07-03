@@ -50,6 +50,7 @@ fun ChairItem(
     ) { state ->
         IconButton(
             onClick = { chairState = state.nextState() },
+            modifier = modifier,
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.chair),
