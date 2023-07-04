@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.screens
+package com.example.welcomecompose.presentation.screens.home
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -7,9 +7,12 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -33,6 +36,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
@@ -61,11 +67,11 @@ import com.example.welcomecompose.presentation.ui.theme.OnPrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.PrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.Sans
 
-@OptIn(
-    ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
-)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
+    val pagerState = rememberPagerState(initialPage = 1)
+    var homeUiState by remember { mutableStateOf(HomeUiState()) }
     Scaffold(
         bottomBar = {
             BottomNavigation(
@@ -81,29 +87,46 @@ fun HomeScreen() {
         },
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            val pagerState = rememberPagerState(initialPage = 1)
-            val images = listOf(
-                R.drawable.img_1,
-                R.drawable.img_3,
-                R.drawable.img_2,
-            )
             Crossfade(
-                targetState = images[pagerState.currentPage],
+                targetState = homeUiState.images[pagerState.currentPage],
                 animationSpec = tween(200, easing = FastOutSlowInEasing),
             ) { BackgroundWithBlurredImage(painter = painterResource(id = it)) }
-            HomeScreenContent(paddingValues = it, pagerState = pagerState, images = images)
+            HomeScreenContent(
+                paddingValues = it,
+                pagerState = pagerState,
+                homeUiState = homeUiState,
+                onClickImage = {
+                   // todo: navigate
+                },
+                onClickComingSoon = {
+                    homeUiState =
+                        homeUiState.copy(
+                            nowShowingChip = homeUiState.nowShowingChip.copy(isSelected = false),
+                            comingSoonChip = homeUiState.comingSoonChip.copy(isSelected = true)
+                        )
+                },
+                onClickNowShowing = {
+                    homeUiState =
+                        homeUiState.copy(
+                            nowShowingChip = homeUiState.nowShowingChip.copy(isSelected = true),
+                            comingSoonChip = homeUiState.comingSoonChip.copy(isSelected = false)
+                        )
+                }
+            )
         }
     }
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun HomeScreenContent(
     paddingValues: PaddingValues,
     pagerState: PagerState,
-    images: List<Int>
-
+    homeUiState: HomeUiState,
+    onClickImage: () -> Unit,
+    onClickNowShowing: () -> Unit,
+    onClickComingSoon: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -117,20 +140,26 @@ fun HomeScreenContent(
             horizontalArrangement = Arrangement.Center,
         ) {
             PrimaryChip(
-                text = "New Showing",
-                isSelected = true,
+                text = homeUiState.nowShowingChip.title,
+                isSelected = homeUiState.nowShowingChip.isSelected,
                 modifier = Modifier.padding(horizontal = 8.dp),
+                doWhenClick = onClickNowShowing
             )
             Space(space = 8)
             PrimaryChip(
-                text = "Coming Soon",
-                isSelected = false,
+                text = homeUiState.comingSoonChip.title,
+                isSelected = homeUiState.comingSoonChip.isSelected,
                 modifier = Modifier.padding(horizontal = 8.dp),
+                doWhenClick = onClickComingSoon
             )
         }
         Space(space = 24)
 
-        HorizontalImages(pagerState = pagerState, images = images)
+        HorizontalImages(
+            onClickImage = onClickImage,
+            pagerState = pagerState,
+            images = homeUiState.images
+        )
 
         Space(space = 24)
 
@@ -147,7 +176,7 @@ fun HomeScreenContent(
             )
             Space(space = 4)
             Text(
-                text = "2h 23m",
+                text = homeUiState.time,
                 fontFamily = Sans,
                 fontWeight = FontWeight.Normal,
                 color = Black87,
@@ -157,7 +186,7 @@ fun HomeScreenContent(
         Space(space = 16)
 
         Text(
-            text = "Fantastic Beasts: The \nSecrets of Dumbledore",
+            text = homeUiState.title,
             fontFamily = Sans,
             fontSize = 24.sp,
             fontWeight = FontWeight.Medium,
@@ -166,22 +195,19 @@ fun HomeScreenContent(
 
         Space(space = 16)
 
-        Row {
-            PrimaryChip(
-                text = "Fantasy",
-                isEnabled = false,
-                unSelectedTextColor = Black87,
-                borderColor = Black8,
-                fontSize = 12.sp
-            )
-            Space(space = 4)
-            PrimaryChip(
-                text = "Adventure",
-                isEnabled = false,
-                unSelectedTextColor = Black87,
-                borderColor = Black8,
-                fontSize = 12.sp
-            )
+        FlowRow(
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            homeUiState.genres.forEach {
+                PrimaryChip(
+                    text = it,
+                    isEnabled = false,
+                    unSelectedTextColor = Black87,
+                    borderColor = Black8,
+                    fontSize = 12.sp
+                )
+                Space(space = 4)
+            }
         }
     }
 }
@@ -244,6 +270,7 @@ fun RowScope.NavigationItem(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalImages(
+    onClickImage: () -> Unit,
     pagerState: PagerState,
     images: List<Int>,
     modifier: Modifier = Modifier
@@ -268,6 +295,7 @@ fun HorizontalImages(
                 .aspectRatio(3 / 4f)
                 .scale(animatedScale)
                 .clip(MaterialTheme.shapes.extraLarge)
+                .clickable { onClickImage() }
         )
     }
 }
