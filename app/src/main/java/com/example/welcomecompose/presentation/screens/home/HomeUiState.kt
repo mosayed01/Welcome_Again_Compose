@@ -15,11 +15,6 @@ data class HomeUiState(
     val genres: List<String> = listOf(
         "Fantasy",
         "Adventure",
-        "Adventure",
-        "Adventure",
-        "Adventure",
-        "Adventure",
-        "Adventure",
     ),
 ) {
     data class ChipUiState(
