@@ -14,11 +14,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -50,27 +45,21 @@ fun PrimaryChip(
     backgroundColors: List<Color> = listOf(PrimaryLight),
     selectedTextColor: Color = OnPrimaryLight,
     unSelectedTextColor: Color = OnPrimaryLight,
-    doWhenSelect: () -> Unit = {},
+    doWhenClick: () -> Unit = {},
     moreContent: (@Composable ColumnScope.(Color) -> Unit)? = null
 ) {
-    var isSelectedState by remember { mutableStateOf(isSelected && isEnabled) }
+//    var isSelectedState by remember { mutableStateOf(isSelected && isEnabled) }
 
     val actualBackgroundColors =
-        if (isSelectedState) backgroundColors else listOf(Color.Transparent)
-    val actualBorderColor = if (isSelectedState) Color.Transparent else borderColor
+        if (isSelected) backgroundColors else listOf(Color.Transparent)
+    val actualBorderColor = if (isSelected) Color.Transparent else borderColor
     val shape = if (moreContent == null) CircleShape else RoundedCornerShape(40)
-
-    LaunchedEffect(key1 = isSelectedState) {
-        if (isSelectedState) {
-            doWhenSelect()
-        }
-    }
 
     Box(
         modifier = Modifier
             .clip(shape = shape)
             .clickableIf(condition = { isEnabled }) {
-                isSelectedState = !isSelectedState
+                doWhenClick()
             }
             .border(border = BorderStroke(1.dp, color = actualBorderColor), shape = shape)
             .drawBehind {
@@ -87,7 +76,7 @@ fun PrimaryChip(
             modifier = modifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val textColor = if (isSelectedState) selectedTextColor else unSelectedTextColor
+            val textColor = if (isSelected) selectedTextColor else unSelectedTextColor
             Text(
                 text = text,
                 fontFamily = Sans,

@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.screens
+package com.example.welcomecompose.presentation.screens.buy_tickets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +23,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,7 +41,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.BlurredCard
 import com.example.welcomecompose.presentation.composables.DateChip
-import com.example.welcomecompose.presentation.composables.Day
 import com.example.welcomecompose.presentation.composables.HourChip
 import com.example.welcomecompose.presentation.composables.PrimaryButton
 import com.example.welcomecompose.presentation.composables.RowOfPairOfChairs
@@ -54,6 +57,28 @@ import com.example.welcomecompose.presentation.ui.theme.White87
 
 @Composable
 fun BuyTicketsScreen() {
+    var buyTicketsUiState by remember {
+        mutableStateOf(BuyTicketsUiState())
+    }
+    BuyTicketsContent(
+        onClickBuy = {},
+        buyTicketsUiState = buyTicketsUiState,
+        doWhenSelectDay = {
+            buyTicketsUiState = buyTicketsUiState.copy(selectedDay = it)
+        },
+        doWhenSelectHour = {
+            buyTicketsUiState = buyTicketsUiState.copy(selectedTime = it)
+        }
+    )
+}
+
+@Composable
+fun BuyTicketsContent(
+    onClickBuy: () -> Unit,
+    doWhenSelectDay: (Day) -> Unit,
+    doWhenSelectHour: (String) -> Unit,
+    buyTicketsUiState: BuyTicketsUiState,
+) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -172,19 +197,27 @@ fun BuyTicketsScreen() {
             SelectedRadioItem(chairState = ChairState.Selected)
         }
 
-        BottomSheet(modifier = Modifier.constrainAs(bottomSheet) {
-            bottom.linkTo(parent.bottom)
-            top.linkTo(information.bottom)
-        })
+        BottomSheet(
+            modifier = Modifier.constrainAs(bottomSheet) {
+                bottom.linkTo(parent.bottom)
+                top.linkTo(information.bottom)
+            },
+            onClickBuy = onClickBuy,
+            buyTicketsUiState = buyTicketsUiState,
+            doWhenSelectHour = doWhenSelectHour,
+            doWhenSelectDay = doWhenSelectDay
+        )
 
     }
-
-
 }
 
 @Composable
 fun BottomSheet(
-    modifier: Modifier = Modifier
+    onClickBuy: () -> Unit,
+    doWhenSelectDay: (Day) -> Unit,
+    doWhenSelectHour: (String) -> Unit,
+    buyTicketsUiState: BuyTicketsUiState,
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier
@@ -198,44 +231,33 @@ fun BottomSheet(
 
             Space(space = 16)
 
-            val days = listOf(
-                Day(14, "Thu"),
-                Day(15, "Fri"),
-                Day(16, "Sat"),
-                Day(17, "Sun"),
-                Day(18, "Mon"),
-                Day(19, "Tue"),
-                Day(20, "Tue"),
-                Day(21, "Tue"),
-                Day(22, "Tue"),
-            )
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                items(days) { DateChip(it, isSelected = it.dayNumber == 17) }
+                items(buyTicketsUiState.days) {
+                    DateChip(
+                        it,
+                        isSelected = it == buyTicketsUiState.selectedDay,
+                        doWhenSelect = doWhenSelectDay
+                    )
+                }
             }
 
             Space(space = 16)
 
-            val timeList = listOf(
-                "10:00",
-                "12:30",
-                "15:30",
-                "18:00",
-                "18:30",
-                "19:00",
-                "20:00",
-            )
-
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                items(timeList) {
-                    HourChip(it, isSelected = it == "10:00")
+                items(buyTicketsUiState.timeList) {
+                    HourChip(
+                        it,
+                        isSelected = it == buyTicketsUiState.selectedTime,
+                        doWhenSelectHour = doWhenSelectHour,
+                    )
                 }
             }
 
@@ -249,14 +271,14 @@ fun BottomSheet(
             ) {
                 Column(horizontalAlignment = Alignment.Start) {
                     Text(
-                        text = "$100.00",
+                        text = "$${buyTicketsUiState.price}",
                         fontSize = 24.sp,
                         fontFamily = Sans,
                         fontWeight = FontWeight.Bold,
                         color = Black87,
                     )
                     Text(
-                        text = "4 tickets",
+                        text = "${buyTicketsUiState.ticketsCount} tickets",
                         fontSize = 11.sp,
                         fontFamily = Sans,
                         fontWeight = FontWeight.Normal,
@@ -266,13 +288,11 @@ fun BottomSheet(
                 }
                 PrimaryButton(
                     painter = painterResource(id = R.drawable.card),
-                    onClick = { /*TODO*/ },
+                    onClick = onClickBuy,
                     text = "Buy Tickets",
                     modifier = Modifier.height(56.dp),
                 )
-
             }
-
         }
     }
 }

@@ -12,6 +12,7 @@ fun HourChip(
     hour: String,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
+    doWhenSelectHour: (String) -> Unit,
 ) {
     PrimaryChip(
         text = hour,
@@ -19,6 +20,9 @@ fun HourChip(
         unSelectedTextColor = Black87,
         backgroundColors = listOf(DarkGray, LightGray),
         borderColor = Black8,
-        modifier = modifier
+        modifier = modifier,
+        doWhenClick = {
+            doWhenSelectHour(hour)
+        }
     )
 }

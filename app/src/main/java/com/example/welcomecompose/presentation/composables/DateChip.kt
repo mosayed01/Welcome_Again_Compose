@@ -7,20 +7,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.welcomecompose.presentation.screens.buy_tickets.Day
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87
 import com.example.welcomecompose.presentation.ui.theme.DarkGray
 import com.example.welcomecompose.presentation.ui.theme.LightGray
 import com.example.welcomecompose.presentation.ui.theme.Sans
 
-
-data class Day(val dayNumber: Int, val dayName: String)
-
 @Composable
 fun DateChip(
     day: Day,
     modifier: Modifier = Modifier,
-    isSelected: Boolean = false
+    isSelected: Boolean = false,
+    doWhenSelect: (Day) -> Unit
 ) {
     PrimaryChip(
         text = day.dayNumber.toString(),
@@ -28,7 +27,10 @@ fun DateChip(
         unSelectedTextColor = Black87,
         backgroundColors = listOf(DarkGray, LightGray),
         borderColor = Black8,
-        modifier = modifier.padding(horizontal = 8.dp)
+        modifier = modifier.padding(horizontal = 8.dp),
+        doWhenClick = {
+            doWhenSelect(day)
+        }
     ) {
         Text(
             text = day.dayName,
