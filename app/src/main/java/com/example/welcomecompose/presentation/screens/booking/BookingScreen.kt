@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.screens
+package com.example.welcomecompose.presentation.screens.booking
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -6,6 +6,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +26,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,8 +52,6 @@ import com.example.welcomecompose.presentation.screens.util.Space
 import com.example.welcomecompose.presentation.ui.theme.Black38
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87
-import com.example.welcomecompose.presentation.ui.theme.DarkGray
-import com.example.welcomecompose.presentation.ui.theme.LightGray
 import com.example.welcomecompose.presentation.ui.theme.OnPrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.PrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.Sans
@@ -58,6 +61,8 @@ import kotlin.math.roundToInt
 
 @Composable
 fun BookingScreen() {
+    val bookingUiState by remember { mutableStateOf(BookingUiState()) }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.img_1),
@@ -69,7 +74,9 @@ fun BookingScreen() {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Header()
+            Header(bookingUiState.time) {
+                // todo: navigate
+            }
             Space(space = 125) // ! bad practice
             StartButton()
         }
@@ -79,24 +86,15 @@ fun BookingScreen() {
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
         ) {
-            val images = listOf(
-                R.drawable.img,
-                R.drawable.img_1,
-                R.drawable.img_5,
-                R.drawable.img_2,
-                R.drawable.img_3,
-                R.drawable.img_2,
-                R.drawable.img_5,
-                R.drawable.background,
-            )
-            MovieContent(images)
+            MovieContent(bookingUiState)
         }
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MovieContent(
-    images: List<Int>
+    bookingUiState: BookingUiState
 ) {
     Column(
         modifier = Modifier.padding(vertical = 16.dp),
@@ -108,11 +106,11 @@ fun MovieContent(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceAround,
         ) {
-            ItemRate(rateOfTen = 6.8f, type = "IMDp")
+            ItemRate(rateOfTen = bookingUiState.rateOfTenIMDp, type = "IMDp")
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "63%",
+                    text = "${bookingUiState.rottenTomatoes}%",
                     fontFamily = Sans,
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp
@@ -126,35 +124,30 @@ fun MovieContent(
                 )
             }
 
-            ItemRate(rateOfTen = 4f, type = "IGN")
+            ItemRate(rateOfTen = bookingUiState.rateOfTenIGN, type = "IGN")
         }
         Space(space = 16)
         Text(
-            text = "Fantastic Beasts: The \nSecrets of Dumbledore",
+            text = bookingUiState.title,
             color = Black87,
             fontSize = 16.sp,
             fontFamily = Sans,
             fontWeight = FontWeight.Medium
         )
         Space(space = 8)
-        Row {
-            PrimaryChip(
-                text = "Fantasy",
-                isEnabled = false,
-                unSelectedTextColor = Black87,
-                backgroundColors = listOf(DarkGray, LightGray),
-                borderColor = Black8,
-                fontSize = 12.sp
-            )
-            Space(space = 4)
-            PrimaryChip(
-                text = "Adventure",
-                isEnabled = false,
-                unSelectedTextColor = Black87,
-                backgroundColors = listOf(DarkGray, LightGray),
-                borderColor = Black8,
-                fontSize = 12.sp
-            )
+        FlowRow(
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            bookingUiState.genres.forEach {
+                PrimaryChip(
+                    text = it,
+                    isEnabled = false,
+                    unSelectedTextColor = Black87,
+                    borderColor = Black8,
+                    fontSize = 12.sp
+                )
+                Space(space = 4)
+            }
         }
 
         LazyRow(
@@ -162,17 +155,16 @@ fun MovieContent(
             contentPadding = PaddingValues(16.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            items(images) {
+            items(bookingUiState.images) {
                 CircleImage(
                     painter = painterResource(id = it),
                     onClick = { /*TODO*/ }
                 )
+                Space(space = 4)
             }
         }
         Text(
-            text = "Professor Albus Dumbledore knows the powerful," +
-                    "dark wizard Gellert Grindelwald is moving to seize" +
-                    "control of the wizarding world. Unable to stop him...",
+            text = bookingUiState.overview,
             color = Black87,
             fontSize = 16.sp,
             fontFamily = Sans,
@@ -247,7 +239,10 @@ fun StartButton() {
 }
 
 @Composable
-fun Header() {
+fun Header(
+    time: String,
+    onClickExit: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -257,7 +252,7 @@ fun Header() {
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         BlurredCard(
-            onClick = { /*TODO*/ },
+            onClick = onClickExit,
             modifier = Modifier.padding(8.dp)
         ) {
             Box(
@@ -294,7 +289,7 @@ fun Header() {
                 )
                 Space(space = 4)
                 Text(
-                    text = "2h 23m",
+                    text = time,
                     fontSize = 12.sp,
                     fontFamily = Sans,
                     fontWeight = FontWeight.Normal,
