@@ -43,6 +43,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.BlurredCard
 import com.example.welcomecompose.presentation.composables.CircleImage
@@ -60,7 +62,9 @@ import com.example.welcomecompose.presentation.ui.theme.White60
 import kotlin.math.roundToInt
 
 @Composable
-fun BookingScreen() {
+fun BookingScreen(
+    navController: NavController
+) {
     val bookingUiState by remember { mutableStateOf(BookingUiState()) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -75,7 +79,7 @@ fun BookingScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Header(bookingUiState.time) {
-                // todo: navigate
+                navController.popBackStack()
             }
             Space(space = 125) // ! bad practice
             StartButton()
@@ -304,5 +308,5 @@ fun Header(
 @Preview
 @Composable
 fun BookingScreenPreview() {
-    BookingScreen()
+    BookingScreen(rememberNavController())
 }

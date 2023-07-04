@@ -38,6 +38,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.BlurredCard
 import com.example.welcomecompose.presentation.composables.DateChip
@@ -56,12 +58,15 @@ import com.example.welcomecompose.presentation.ui.theme.White60
 import com.example.welcomecompose.presentation.ui.theme.White87
 
 @Composable
-fun BuyTicketsScreen() {
+fun BuyTicketsScreen(navController: NavController) {
     var buyTicketsUiState by remember {
         mutableStateOf(BuyTicketsUiState())
     }
     BuyTicketsContent(
-        onClickBuy = {},
+        onClickExit = { navController.popBackStack() },
+        onClickBuy = {
+
+        },
         buyTicketsUiState = buyTicketsUiState,
         doWhenSelectDay = {
             buyTicketsUiState = buyTicketsUiState.copy(selectedDay = it)
@@ -74,6 +79,7 @@ fun BuyTicketsScreen() {
 
 @Composable
 fun BuyTicketsContent(
+    onClickExit: () -> Unit,
     onClickBuy: () -> Unit,
     doWhenSelectDay: (Day) -> Unit,
     doWhenSelectHour: (String) -> Unit,
@@ -93,7 +99,7 @@ fun BuyTicketsContent(
             top.linkTo(parent.top, 16.dp)
         }) {
             BlurredCard(
-                onClick = { /*TODO*/ },
+                onClick = { onClickExit() },
                 modifier = Modifier.padding(8.dp)
             ) {
                 Box(
@@ -334,5 +340,5 @@ fun SelectedRadioItem(
 @Preview(showBackground = true, showSystemUi = true, device = "id:pixel_3a_xl")
 @Composable
 fun BuyTicketsScreenPrev() {
-    BuyTicketsScreen()
+    BuyTicketsScreen(rememberNavController())
 }

@@ -57,8 +57,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.PrimaryChip
+import com.example.welcomecompose.presentation.screens.Screens
 import com.example.welcomecompose.presentation.screens.util.Space
 import com.example.welcomecompose.presentation.ui.theme.Black38
 import com.example.welcomecompose.presentation.ui.theme.Black8
@@ -69,7 +72,9 @@ import com.example.welcomecompose.presentation.ui.theme.Sans
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController
+) {
     val pagerState = rememberPagerState(initialPage = 1)
     var homeUiState by remember { mutableStateOf(HomeUiState()) }
     Scaffold(
@@ -81,7 +86,12 @@ fun HomeScreen() {
             ) {
                 NavigationItem(painter = painterResource(id = R.drawable.movie), isSelected = true)
                 NavigationItem(painter = painterResource(id = R.drawable.ic_search))
-                NavigationItem(painter = painterResource(id = R.drawable.ticket)) { Badge(count = 5) }
+                NavigationItem(
+                    painter = painterResource(id = R.drawable.ticket),
+                    onClick = {
+                        navController.navigate(Screens.BuyTickets.route)
+                    }
+                ) { Badge(count = 5) }
                 NavigationItem(painter = painterResource(id = R.drawable.user))
             }
         },
@@ -96,7 +106,7 @@ fun HomeScreen() {
                 pagerState = pagerState,
                 homeUiState = homeUiState,
                 onClickImage = {
-                   // todo: navigate
+                    navController.navigate(Screens.Booking.route)
                 },
                 onClickComingSoon = {
                     homeUiState =
@@ -237,11 +247,12 @@ fun RowScope.NavigationItem(
     painter: Painter,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
+    onClick: () -> Unit = {},
     moreContent: (@Composable () -> Unit)? = null,
 ) {
     BottomNavigationItem(
         selected = isSelected,
-        onClick = { /*TODO*/ },
+        onClick = { onClick() },
         icon = {
             Row(
                 modifier = modifier
@@ -347,5 +358,5 @@ fun BackgroundWithBlurredImage(
 @Preview
 @Composable
 fun HomeScreenPrev() {
-    HomeScreen()
+    HomeScreen(rememberNavController())
 }
