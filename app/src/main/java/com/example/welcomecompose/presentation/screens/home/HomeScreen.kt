@@ -290,7 +290,6 @@ fun HorizontalImages(
         state = pagerState,
         pageCount = images.size,
         contentPadding = PaddingValues(horizontal = 32.dp),
-        pageSpacing = 8.dp,
         modifier = modifier
     ) {
         val animatedScale by animateFloatAsState(
