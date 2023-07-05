@@ -1,8 +1,6 @@
 package com.example.welcomecompose.presentation.composables
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,16 +38,19 @@ fun TicketsButton(
     modifier: Modifier = Modifier,
     text: String? = null,
     iconSize: Int = 24,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
+    var isVisibleText by remember { mutableStateOf(false) }
+
     Button(
-        onClick = onClick,
+        onClick = {
+            isVisibleText = !isVisibleText
+            onClick()
+        },
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
             containerColor = PrimaryLight,
             contentColor = OnPrimaryLight,
         ),
-        interactionSource = interactionSource,
         shape = if (text != null) MaterialTheme.shapes.extraLarge else CircleShape
     ) {
         Icon(
@@ -59,11 +60,6 @@ fun TicketsButton(
             modifier = Modifier.size(iconSize.dp)
         )
         text?.let {
-            val isPressed by interactionSource.collectIsPressedAsState()
-            var isVisibleText by remember { mutableStateOf(false) }
-
-            if (isPressed) { isVisibleText = !isVisibleText }
-
             AnimatedVisibility(visible = isVisibleText) {
                 Text(
                     text = it,
