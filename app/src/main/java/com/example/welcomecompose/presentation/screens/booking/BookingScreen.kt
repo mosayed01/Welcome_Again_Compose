@@ -48,7 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.BlurredCard
 import com.example.welcomecompose.presentation.composables.CircleImage
-import com.example.welcomecompose.presentation.composables.PrimaryButton
+import com.example.welcomecompose.presentation.composables.TicketsButton
 import com.example.welcomecompose.presentation.composables.Chip
 import com.example.welcomecompose.presentation.screens.util.Space
 import com.example.welcomecompose.presentation.ui.theme.Black38
@@ -179,7 +179,7 @@ fun MovieContent(
             overflow = TextOverflow.Ellipsis
         )
         Space(space = 32.dp)
-        PrimaryButton(
+        TicketsButton(
             painter = painterResource(id = R.drawable.card),
             onClick = { /*TODO*/ },
             text = "Booking",

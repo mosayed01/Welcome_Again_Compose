@@ -16,11 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,47 +38,49 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.BlurredCard
-import com.example.welcomecompose.presentation.composables.PrimaryButton
+import com.example.welcomecompose.presentation.composables.BottomSheet
+import com.example.welcomecompose.presentation.composables.TicketsButton
 import com.example.welcomecompose.presentation.composables.ui_models.ChairState
 import com.example.welcomecompose.presentation.screens.buy_tickets.composables.DateChip
 import com.example.welcomecompose.presentation.screens.buy_tickets.composables.HourChip
 import com.example.welcomecompose.presentation.screens.buy_tickets.composables.RowOfPairOfChairs
-import com.example.welcomecompose.presentation.screens.util.Space
+import com.example.welcomecompose.presentation.screens.buy_tickets.composables.SelectedRadioItem
 import com.example.welcomecompose.presentation.screens.util.cinemaStyle
 import com.example.welcomecompose.presentation.ui.theme.Black60
 import com.example.welcomecompose.presentation.ui.theme.Black87
-import com.example.welcomecompose.presentation.ui.theme.DarkGray
 import com.example.welcomecompose.presentation.ui.theme.OnPrimaryLight
-import com.example.welcomecompose.presentation.ui.theme.PrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.Sans
-import com.example.welcomecompose.presentation.ui.theme.White60
-import com.example.welcomecompose.presentation.ui.theme.White87
 
 @Composable
 fun BuyTicketsScreen(navController: NavController) {
     var buyTicketsUiState by remember { mutableStateOf(BuyTicketsUiState()) }
     BuyTicketsContent(
-        onClickExit = { navController.popBackStack() },
-        onClickBuy = {
+        listener = object : BuyTicketsInteractionsListener {
+            override fun onClickExit() {
+                navController.popBackStack()
+            }
+
+            override fun onClickBuy() {
+
+            }
+
+            override fun doWhenSelectDay(day: Day) {
+                buyTicketsUiState = buyTicketsUiState.copy(selectedDay = day)
+            }
+
+            override fun doWhenSelectHour(hour: String) {
+                buyTicketsUiState = buyTicketsUiState.copy(selectedTime = hour)
+            }
 
         },
         state = buyTicketsUiState,
-        doWhenSelectDay = {
-            buyTicketsUiState = buyTicketsUiState.copy(selectedDay = it)
-        },
-        doWhenSelectHour = {
-            buyTicketsUiState = buyTicketsUiState.copy(selectedTime = it)
-        }
     )
 }
 
 @Composable
 fun BuyTicketsContent(
-    onClickExit: () -> Unit,
-    onClickBuy: () -> Unit,
-    doWhenSelectDay: (Day) -> Unit,
-    doWhenSelectHour: (String) -> Unit,
     state: BuyTicketsUiState,
+    listener: BuyTicketsInteractionsListener,
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -95,7 +94,7 @@ fun BuyTicketsContent(
         Box(modifier = Modifier.constrainAs(xIcon) {
             start.linkTo(parent.start, 16.dp)
             top.linkTo(parent.top, 16.dp)
-        }) { ExitIcon(onClickExit) }
+        }) { ExitIcon(listener::onClickExit) }
 
         Image(
             painter = painterResource(id = R.drawable.background),
@@ -179,20 +178,66 @@ fun BuyTicketsContent(
             modifier = Modifier.constrainAs(bottomSheet) {
                 bottom.linkTo(parent.bottom)
                 top.linkTo(information.bottom)
-            },
-            onClickBuy = onClickBuy,
-            buyTicketsUiState = state,
-            doWhenSelectHour = doWhenSelectHour,
-            doWhenSelectDay = doWhenSelectDay
-        )
-    }
-}
+            }
+        ){
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                items(state.days) {
+                    DateChip(
+                        it,
+                        isSelected = it == state.selectedDay,
+                        doWhenSelect = listener::doWhenSelectDay
+                    )
+                }
+            }
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                items(state.timeList) {
+                    HourChip(
+                        it,
+                        isSelected = it == state.selectedTime,
+                        doWhenSelectHour = listener::doWhenSelectHour,
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(horizontalAlignment = Alignment.Start) {
+                    Text(
+                        text = "$${state.price}",
+                        fontSize = 24.sp,
+                        fontFamily = Sans,
+                        fontWeight = FontWeight.Bold,
+                        color = Black87,
+                    )
+                    Text(
+                        text = "${state.ticketsCount} tickets",
+                        fontSize = 11.sp,
+                        fontFamily = Sans,
+                        fontWeight = FontWeight.Normal,
+                        color = Black60
+                    )
 
-@Composable
-private fun Information() {
-    SelectedRadioItem(chairState = ChairState.Available)
-    SelectedRadioItem(chairState = ChairState.Taken)
-    SelectedRadioItem(chairState = ChairState.Selected)
+                }
+                TicketsButton(
+                    painter = painterResource(id = R.drawable.card),
+                    onClick = listener::onClickBuy,
+                    text = "Buy Tickets",
+                    modifier = Modifier.height(56.dp),
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -224,117 +269,10 @@ private fun ExitIcon(
 }
 
 @Composable
-private fun BottomSheet(
-    onClickBuy: () -> Unit,
-    doWhenSelectDay: (Day) -> Unit,
-    doWhenSelectHour: (String) -> Unit,
-    buyTicketsUiState: BuyTicketsUiState,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier = modifier
-            .clip(RoundedCornerShape(topStartPercent = 10, topEndPercent = 10))
-            .fillMaxWidth(),
-    ) {
-        Column(
-            modifier = Modifier.padding(vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                items(buyTicketsUiState.days) {
-                    DateChip(
-                        it,
-                        isSelected = it == buyTicketsUiState.selectedDay,
-                        doWhenSelect = doWhenSelectDay
-                    )
-                }
-            }
-
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                items(buyTicketsUiState.timeList) {
-                    HourChip(
-                        it,
-                        isSelected = it == buyTicketsUiState.selectedTime,
-                        doWhenSelectHour = doWhenSelectHour,
-                    )
-                }
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(horizontalAlignment = Alignment.Start) {
-                    Text(
-                        text = "$${buyTicketsUiState.price}",
-                        fontSize = 24.sp,
-                        fontFamily = Sans,
-                        fontWeight = FontWeight.Bold,
-                        color = Black87,
-                    )
-                    Text(
-                        text = "${buyTicketsUiState.ticketsCount} tickets",
-                        fontSize = 11.sp,
-                        fontFamily = Sans,
-                        fontWeight = FontWeight.Normal,
-                        color = Black60
-                    )
-
-                }
-                PrimaryButton(
-                    painter = painterResource(id = R.drawable.card),
-                    onClick = onClickBuy,
-                    text = "Buy Tickets",
-                    modifier = Modifier.height(56.dp),
-                )
-            }
-        }
-    }
-}
-
-
-@Composable
-fun SelectedRadioItem(
-    chairState: ChairState
-) {
-    val name = when (chairState) {
-        ChairState.Available -> "Available"
-        ChairState.Taken -> "Taken"
-        ChairState.Selected -> "Selected"
-    }
-    val color = when (chairState) {
-        ChairState.Available -> White87
-        ChairState.Taken -> DarkGray
-        ChairState.Selected -> PrimaryLight
-    }
-
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            modifier = Modifier
-                .size(12.dp)
-                .clip(CircleShape)
-                .background(color)
-        )
-        Space(space = 8.dp)
-        Text(
-            text = name,
-            fontFamily = Sans,
-            fontWeight = FontWeight.Normal,
-            color = White60,
-            fontSize = 14.sp
-        )
-    }
+private fun Information() {
+    SelectedRadioItem(chairState = ChairState.Available)
+    SelectedRadioItem(chairState = ChairState.Taken)
+    SelectedRadioItem(chairState = ChairState.Selected)
 }
 
 @Preview(showBackground = true, showSystemUi = true, device = "id:pixel_3a_xl")
