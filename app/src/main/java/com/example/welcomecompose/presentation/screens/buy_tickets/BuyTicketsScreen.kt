@@ -45,7 +45,10 @@ import com.example.welcomecompose.presentation.ui.theme.Black87
 import com.example.welcomecompose.presentation.ui.theme.Sans
 
 @Composable
-fun BuyTicketsScreen(navController: NavController) {
+fun BuyTicketsScreen(
+    navController: NavController,
+    screenPadding: PaddingValues
+) {
     var buyTicketsUiState by remember { mutableStateOf(BuyTicketsUiState()) }
     BuyTicketsContent(
         listener = object : BuyTicketsInteractionsListener {
@@ -67,6 +70,7 @@ fun BuyTicketsScreen(navController: NavController) {
 
         },
         state = buyTicketsUiState,
+        screenPadding = screenPadding
     )
 }
 
@@ -74,10 +78,12 @@ fun BuyTicketsScreen(navController: NavController) {
 fun BuyTicketsContent(
     state: BuyTicketsUiState,
     listener: BuyTicketsInteractionsListener,
+    screenPadding: PaddingValues
 ) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
+            .padding(screenPadding)
             .background(Color.Black)
     ) {
         val (xIcon, image, rowChairs1,
@@ -96,7 +102,7 @@ fun BuyTicketsContent(
                 .fillMaxWidth()
                 .cinemaStyle(clipRatio = 0.58f)
                 .constrainAs(image) {
-                    top.linkTo(xIcon.bottom, (-24).dp)
+                    top.linkTo(xIcon.bottom, (-16).dp)
                 },
         )
 
@@ -170,9 +176,8 @@ fun BuyTicketsContent(
         BottomSheet(
             modifier = Modifier.constrainAs(bottomSheet) {
                 bottom.linkTo(parent.bottom)
-                top.linkTo(information.bottom)
             }
-        ){
+        ) {
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
@@ -243,5 +248,5 @@ private fun Information() {
 @Preview(showBackground = true, showSystemUi = true, device = "id:pixel_3a_xl")
 @Composable
 fun BuyTicketsScreenPrev() {
-    BuyTicketsScreen(rememberNavController())
+    BuyTicketsScreen(rememberNavController(), PaddingValues(0.dp))
 }

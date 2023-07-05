@@ -35,10 +35,10 @@ fun Navigation(
                 HomeScreen(navController = navController, screenPadding = screenPadding)
             }
             composable(Screens.Booking.route) {
-                BookingScreen(navController)
+                BookingScreen(navController = navController, screenPadding = screenPadding)
             }
             composable(Screens.BuyTickets.route) {
-                BuyTicketsScreen(navController)
+                BuyTicketsScreen(navController = navController, screenPadding = screenPadding)
             }
         }
     }

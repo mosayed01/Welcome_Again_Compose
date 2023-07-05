@@ -26,11 +26,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.BottomSheet
 import com.example.welcomecompose.presentation.composables.Chip
@@ -48,19 +46,21 @@ import com.example.welcomecompose.presentation.ui.theme.Typography
 
 @Composable
 fun BookingScreen(
-    navController: NavController
+    navController: NavController,
+    screenPadding: PaddingValues
 ) {
     val state by remember { mutableStateOf(BookingUiState()) }
-    BookingScreenContent(state = state) { navController.popBackStack() }
+    BookingScreenContent(state = state, screenPadding = screenPadding) { navController.popBackStack() }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BookingScreenContent(
     state: BookingUiState,
+    screenPadding: PaddingValues,
     onClickExit: () -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().padding(screenPadding)) {
         Image(
             painter = painterResource(id = R.drawable.img_1),
             contentDescription = "",
@@ -156,10 +156,4 @@ fun BookingScreenContent(
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun BookingScreenPreview() {
-    BookingScreen(rememberNavController())
 }
