@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables
+package com.example.welcomecompose.presentation.screens.buy_tickets.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

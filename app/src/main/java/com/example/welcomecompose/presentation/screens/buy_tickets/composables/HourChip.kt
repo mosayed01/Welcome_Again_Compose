@@ -1,7 +1,8 @@
-package com.example.welcomecompose.presentation.composables
+package com.example.welcomecompose.presentation.screens.buy_tickets.composables
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.welcomecompose.presentation.composables.Chip
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87
 import com.example.welcomecompose.presentation.ui.theme.DarkGray

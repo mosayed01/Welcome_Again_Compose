@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables
+package com.example.welcomecompose.presentation.screens.buy_tickets.composables
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.welcomecompose.presentation.composables.Chip
 import com.example.welcomecompose.presentation.screens.buy_tickets.Day
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87

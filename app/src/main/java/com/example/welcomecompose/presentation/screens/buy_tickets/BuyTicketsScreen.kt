@@ -31,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,12 +41,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.BlurredCard
-import com.example.welcomecompose.presentation.composables.DateChip
-import com.example.welcomecompose.presentation.composables.HourChip
 import com.example.welcomecompose.presentation.composables.PrimaryButton
-import com.example.welcomecompose.presentation.composables.RowOfPairOfChairs
 import com.example.welcomecompose.presentation.composables.ui_models.ChairState
+import com.example.welcomecompose.presentation.screens.buy_tickets.composables.DateChip
+import com.example.welcomecompose.presentation.screens.buy_tickets.composables.HourChip
+import com.example.welcomecompose.presentation.screens.buy_tickets.composables.RowOfPairOfChairs
 import com.example.welcomecompose.presentation.screens.util.Space
+import com.example.welcomecompose.presentation.screens.util.cinemaStyle
 import com.example.welcomecompose.presentation.ui.theme.Black60
 import com.example.welcomecompose.presentation.ui.theme.Black87
 import com.example.welcomecompose.presentation.ui.theme.DarkGray
@@ -59,15 +59,13 @@ import com.example.welcomecompose.presentation.ui.theme.White87
 
 @Composable
 fun BuyTicketsScreen(navController: NavController) {
-    var buyTicketsUiState by remember {
-        mutableStateOf(BuyTicketsUiState())
-    }
+    var buyTicketsUiState by remember { mutableStateOf(BuyTicketsUiState()) }
     BuyTicketsContent(
         onClickExit = { navController.popBackStack() },
         onClickBuy = {
 
         },
-        buyTicketsUiState = buyTicketsUiState,
+        state = buyTicketsUiState,
         doWhenSelectDay = {
             buyTicketsUiState = buyTicketsUiState.copy(selectedDay = it)
         },
@@ -83,7 +81,7 @@ fun BuyTicketsContent(
     onClickBuy: () -> Unit,
     doWhenSelectDay: (Day) -> Unit,
     doWhenSelectHour: (String) -> Unit,
-    buyTicketsUiState: BuyTicketsUiState,
+    state: BuyTicketsUiState,
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -126,10 +124,11 @@ fun BuyTicketsContent(
             painter = painterResource(id = R.drawable.background),
             contentDescription = "",
             modifier = Modifier
-                .graphicsLayer { rotationX = -50f }
+                .fillMaxWidth()
+                .cinemaStyle()
                 .constrainAs(image) {
-                    top.linkTo(xIcon.bottom, (-8).dp)
-                }
+                    top.linkTo(xIcon.bottom, (-24).dp)
+                },
         )
         val gap = 50
 
@@ -141,7 +140,7 @@ fun BuyTicketsContent(
                 Pair(ChairState.Taken, ChairState.Available),
             ),
             modifier = Modifier.constrainAs(rowChairs1) {
-                top.linkTo(image.bottom, (-gap).dp)
+                top.linkTo(image.bottom, (-24).dp)
             }
         )
 
@@ -209,7 +208,7 @@ fun BuyTicketsContent(
                 top.linkTo(information.bottom)
             },
             onClickBuy = onClickBuy,
-            buyTicketsUiState = buyTicketsUiState,
+            buyTicketsUiState = state,
             doWhenSelectHour = doWhenSelectHour,
             doWhenSelectDay = doWhenSelectDay
         )
@@ -218,7 +217,7 @@ fun BuyTicketsContent(
 }
 
 @Composable
-fun BottomSheet(
+private fun BottomSheet(
     onClickBuy: () -> Unit,
     doWhenSelectDay: (Day) -> Unit,
     doWhenSelectHour: (String) -> Unit,
@@ -235,11 +234,9 @@ fun BottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Space(space = 16.dp)
-
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 16.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 items(buyTicketsUiState.days) {
@@ -251,11 +248,9 @@ fun BottomSheet(
                 }
             }
 
-            Space(space = 16.dp)
-
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 16.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 items(buyTicketsUiState.timeList) {
@@ -267,12 +262,10 @@ fun BottomSheet(
                 }
             }
 
-            Space(space = 32.dp)
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(start = 16.dp, end = 16.dp, top = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column(horizontalAlignment = Alignment.Start) {

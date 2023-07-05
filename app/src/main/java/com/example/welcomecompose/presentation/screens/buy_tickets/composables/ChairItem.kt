@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables
+package com.example.welcomecompose.presentation.screens.buy_tickets.composables
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
