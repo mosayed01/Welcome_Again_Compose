@@ -20,32 +20,33 @@ fun Modifier.clickableIf(condition: () -> Boolean, onClick: (() -> Unit)? = null
     } else this
 }
 
-fun Modifier.cinemaStyle(scaleRatio: Float = 0.8f): Modifier {
+fun Modifier.cinemaStyle(clipRatio: Float = 0.8f, rotationX: Float = -35f): Modifier {
     return then(
         Modifier
             .drawWithContent {
                 val path = Path().apply {
-                    moveTo(0f, size.height * (1 - scaleRatio))
+                    val yRatio = 0.2f
+                    moveTo(0f, size.height * yRatio)
                     lineTo(0f, size.height)
                     quadraticBezierTo(
                         size.width / 2,
-                        size.height * scaleRatio,
+                        size.height * clipRatio,
                         size.width,
                         size.height
                     )
-                    lineTo(size.width, size.height * (1 - scaleRatio))
+                    lineTo(size.width, size.height * yRatio)
                     quadraticBezierTo(
                         size.width / 2,
                         0f,
                         0f,
-                        size.height - size.height * scaleRatio,
+                        size.height * yRatio,
                     )
                 }
                 clipPath(path = path) {
                     this@drawWithContent.drawContent()
                 }
             }
-            .graphicsLayer { rotationX = -30f }
+            .graphicsLayer { this.rotationX = rotationX }
     )
 }
 

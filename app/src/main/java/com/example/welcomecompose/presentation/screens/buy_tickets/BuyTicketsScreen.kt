@@ -95,43 +95,20 @@ fun BuyTicketsContent(
         Box(modifier = Modifier.constrainAs(xIcon) {
             start.linkTo(parent.start, 16.dp)
             top.linkTo(parent.top, 16.dp)
-        }) {
-            BlurredCard(
-                onClick = { onClickExit() },
-                modifier = Modifier.padding(8.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .border(
-                            1.5.dp,
-                            color = OnPrimaryLight,
-                            shape = CircleShape
-                        )
-                        .size(24.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        Icons.Rounded.Close,
-                        contentDescription = "Close",
-                        tint = OnPrimaryLight,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
-        }
+        }) { ExitIcon(onClickExit) }
 
         Image(
             painter = painterResource(id = R.drawable.background),
             contentDescription = "",
             modifier = Modifier
                 .fillMaxWidth()
-                .cinemaStyle()
+                .cinemaStyle(clipRatio = 0.58f)
                 .constrainAs(image) {
                     top.linkTo(xIcon.bottom, (-24).dp)
                 },
         )
-        val gap = 50
 
+        val gap = 50
         /// region chairs
         RowOfPairOfChairs(
             pairList = listOf(
@@ -196,11 +173,7 @@ fun BuyTicketsContent(
                     bottom.linkTo(bottomSheet.top)
                 },
             horizontalArrangement = Arrangement.SpaceAround,
-        ) {
-            SelectedRadioItem(chairState = ChairState.Available)
-            SelectedRadioItem(chairState = ChairState.Taken)
-            SelectedRadioItem(chairState = ChairState.Selected)
-        }
+        ) { Information() }
 
         BottomSheet(
             modifier = Modifier.constrainAs(bottomSheet) {
@@ -212,7 +185,41 @@ fun BuyTicketsContent(
             doWhenSelectHour = doWhenSelectHour,
             doWhenSelectDay = doWhenSelectDay
         )
+    }
+}
 
+@Composable
+private fun Information() {
+    SelectedRadioItem(chairState = ChairState.Available)
+    SelectedRadioItem(chairState = ChairState.Taken)
+    SelectedRadioItem(chairState = ChairState.Selected)
+}
+
+@Composable
+private fun ExitIcon(
+    onClickExit: () -> Unit
+) {
+    BlurredCard(
+        onClick = { onClickExit() },
+        modifier = Modifier.padding(8.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .border(
+                    1.5.dp,
+                    color = OnPrimaryLight,
+                    shape = CircleShape
+                )
+                .size(24.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                Icons.Rounded.Close,
+                contentDescription = "Close",
+                tint = OnPrimaryLight,
+                modifier = Modifier.size(16.dp)
+            )
+        }
     }
 }
 
