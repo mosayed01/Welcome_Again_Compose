@@ -2,7 +2,6 @@ package com.example.welcomecompose.presentation.screens.buy_tickets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,13 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,8 +31,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.welcomecompose.R
-import com.example.welcomecompose.presentation.composables.BlurredCard
 import com.example.welcomecompose.presentation.composables.BottomSheet
+import com.example.welcomecompose.presentation.composables.ExitIcon
 import com.example.welcomecompose.presentation.composables.TicketsButton
 import com.example.welcomecompose.presentation.composables.ui_models.ChairState
 import com.example.welcomecompose.presentation.screens.buy_tickets.composables.DateChip
@@ -48,7 +42,6 @@ import com.example.welcomecompose.presentation.screens.buy_tickets.composables.S
 import com.example.welcomecompose.presentation.screens.util.cinemaStyle
 import com.example.welcomecompose.presentation.ui.theme.Black60
 import com.example.welcomecompose.presentation.ui.theme.Black87
-import com.example.welcomecompose.presentation.ui.theme.OnPrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.Sans
 
 @Composable
@@ -236,34 +229,6 @@ fun BuyTicketsContent(
                     modifier = Modifier.height(56.dp),
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun ExitIcon(
-    onClickExit: () -> Unit
-) {
-    BlurredCard(
-        onClick = { onClickExit() },
-        modifier = Modifier.padding(8.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .border(
-                    1.5.dp,
-                    color = OnPrimaryLight,
-                    shape = CircleShape
-                )
-                .size(24.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                Icons.Rounded.Close,
-                contentDescription = "Close",
-                tint = OnPrimaryLight,
-                modifier = Modifier.size(16.dp)
-            )
         }
     }
 }
