@@ -59,7 +59,7 @@ fun HomeScreen(
         screenPadding = screenPadding,
         pagerState = pagerState,
         state = homeUiState,
-        listener = object : HomeScreenInteractions { // cause I don't need a view model
+        listener = object : HomeScreenInteractionsListener { // cause I don't need a view model
             override fun onClickImage() {
                 navController.navigate(Screens.Booking.route)
             }
@@ -97,7 +97,7 @@ fun HomeScreenContent(
     screenPadding: PaddingValues,
     pagerState: PagerState,
     state: HomeUiState,
-    listener: HomeScreenInteractions
+    listener: HomeScreenInteractionsListener
 ) {
     Box(modifier = Modifier.fillMaxSize().padding(screenPadding)) {
         Crossfade(
@@ -200,7 +200,7 @@ fun HomeScreenPrev() {
         screenPadding = PaddingValues(vertical = 0.dp),
         pagerState = PagerState(initialPage = 1),
         state = HomeUiState(),
-        listener = object : HomeScreenInteractions {
+        listener = object : HomeScreenInteractionsListener {
             override fun onClickImage() {
                 TODO("Not yet implemented")
             }

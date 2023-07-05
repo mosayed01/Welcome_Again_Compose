@@ -1,6 +1,6 @@
 package com.example.welcomecompose.presentation.screens.home
 
-interface HomeScreenInteractions {
+interface HomeScreenInteractionsListener {
     fun onClickImage()
     fun onClickNowShowing()
     fun onClickComingSoon()

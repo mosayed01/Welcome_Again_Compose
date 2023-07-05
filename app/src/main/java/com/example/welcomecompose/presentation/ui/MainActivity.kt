@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation
+package com.example.welcomecompose.presentation.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
