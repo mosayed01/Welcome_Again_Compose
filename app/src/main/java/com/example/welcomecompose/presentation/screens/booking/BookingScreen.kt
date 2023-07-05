@@ -44,6 +44,7 @@ import com.example.welcomecompose.presentation.ui.theme.Black38
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87
 import com.example.welcomecompose.presentation.ui.theme.Sans
+import com.example.welcomecompose.presentation.ui.theme.Typography
 
 @Composable
 fun BookingScreen(
@@ -108,10 +109,7 @@ fun BookingScreenContent(
             Space(space = 16.dp)
             Text(
                 text = state.title,
-                color = Black87,
-                fontSize = 16.sp,
-                fontFamily = Sans,
-                fontWeight = FontWeight.Medium
+                style = Typography.bodyLarge
             )
             Space(space = 8.dp)
             FlowRow(
@@ -143,9 +141,7 @@ fun BookingScreenContent(
             Text(
                 text = state.overview,
                 color = Black87,
-                fontSize = 16.sp,
-                fontFamily = Sans,
-                fontWeight = FontWeight.Normal,
+                style = Typography.bodyLarge,
                 modifier = Modifier.padding(horizontal = 16.dp),
                 textAlign = TextAlign.Center,
                 maxLines = 3,
