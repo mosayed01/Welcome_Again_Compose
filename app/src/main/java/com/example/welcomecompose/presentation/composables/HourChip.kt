@@ -14,7 +14,7 @@ fun HourChip(
     isSelected: Boolean = false,
     doWhenSelectHour: (String) -> Unit,
 ) {
-    PrimaryChip(
+    Chip(
         text = hour,
         isSelected = isSelected,
         unSelectedTextColor = Black87,

@@ -35,7 +35,7 @@ import com.example.welcomecompose.presentation.ui.theme.Sans
 import com.example.welcomecompose.presentation.ui.theme.White60
 
 @Composable
-fun PrimaryChip(
+fun Chip(
     text: String,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
@@ -106,8 +106,8 @@ fun PrimaryChipPreview() {
                 .blur(5.dp)
         )
         Row(modifier = Modifier.align(Alignment.TopCenter)) {
-            PrimaryChip(text = "Now Showing", isSelected = true, isEnabled = true)
-            PrimaryChip(text = "Coming Soon", isSelected = false, isEnabled = false)
+            Chip(text = "Now Showing", isSelected = true, isEnabled = true)
+            Chip(text = "Coming Soon", isSelected = false, isEnabled = false)
         }
     }
 }

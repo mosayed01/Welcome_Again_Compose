@@ -49,7 +49,7 @@ import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.BlurredCard
 import com.example.welcomecompose.presentation.composables.CircleImage
 import com.example.welcomecompose.presentation.composables.PrimaryButton
-import com.example.welcomecompose.presentation.composables.PrimaryChip
+import com.example.welcomecompose.presentation.composables.Chip
 import com.example.welcomecompose.presentation.screens.util.Space
 import com.example.welcomecompose.presentation.ui.theme.Black38
 import com.example.welcomecompose.presentation.ui.theme.Black8
@@ -81,7 +81,7 @@ fun BookingScreen(
             Header(bookingUiState.time) {
                 navController.popBackStack()
             }
-            Space(space = 125) // ! bad practice
+            Space(space = 125.dp) // ! bad practice
             StartButton()
         }
         Surface(
@@ -130,7 +130,7 @@ fun MovieContent(
 
             ItemRate(rateOfTen = bookingUiState.rateOfTenIGN, type = "IGN")
         }
-        Space(space = 16)
+        Space(space = 16.dp)
         Text(
             text = bookingUiState.title,
             color = Black87,
@@ -138,19 +138,19 @@ fun MovieContent(
             fontFamily = Sans,
             fontWeight = FontWeight.Medium
         )
-        Space(space = 8)
+        Space(space = 8.dp)
         FlowRow(
             horizontalArrangement = Arrangement.Center,
         ) {
             bookingUiState.genres.forEach {
-                PrimaryChip(
+                Chip(
                     text = it,
                     isEnabled = false,
                     unSelectedTextColor = Black87,
                     borderColor = Black8,
                     fontSize = 12.sp
                 )
-                Space(space = 4)
+                Space(space = 4.dp)
             }
         }
 
@@ -164,7 +164,7 @@ fun MovieContent(
                     painter = painterResource(id = it),
                     onClick = { /*TODO*/ }
                 )
-                Space(space = 4)
+                Space(space = 4.dp)
             }
         }
         Text(
@@ -178,7 +178,7 @@ fun MovieContent(
             maxLines = 3,
             overflow = TextOverflow.Ellipsis
         )
-        Space(space = 32)
+        Space(space = 32.dp)
         PrimaryButton(
             painter = painterResource(id = R.drawable.card),
             onClick = { /*TODO*/ },
@@ -291,7 +291,7 @@ fun Header(
                     tint = White38,
                     modifier = Modifier.size(16.dp),
                 )
-                Space(space = 4)
+                Space(space = 4.dp)
                 Text(
                     text = time,
                     fontSize = 12.sp,

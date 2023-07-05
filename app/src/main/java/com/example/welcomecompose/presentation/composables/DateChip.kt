@@ -21,7 +21,7 @@ fun DateChip(
     isSelected: Boolean = false,
     doWhenSelect: (Day) -> Unit
 ) {
-    PrimaryChip(
+    Chip(
         text = day.dayNumber.toString(),
         isSelected = isSelected,
         unSelectedTextColor = Black87,

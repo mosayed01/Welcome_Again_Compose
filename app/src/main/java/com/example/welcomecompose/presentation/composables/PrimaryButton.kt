@@ -50,7 +50,7 @@ fun PrimaryButton(
             modifier = Modifier.size(iconSize.dp)
         )
         text?.let {
-            Space(space = 8)
+            Space(space = 8.dp)
             Text(
                 text = it,
                 fontSize = 16.sp,

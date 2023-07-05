@@ -235,7 +235,7 @@ fun BottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Space(space = 16)
+            Space(space = 16.dp)
 
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
@@ -251,7 +251,7 @@ fun BottomSheet(
                 }
             }
 
-            Space(space = 16)
+            Space(space = 16.dp)
 
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
@@ -267,7 +267,7 @@ fun BottomSheet(
                 }
             }
 
-            Space(space = 32)
+            Space(space = 32.dp)
 
             Row(
                 modifier = Modifier
@@ -326,7 +326,7 @@ fun SelectedRadioItem(
                 .clip(CircleShape)
                 .background(color)
         )
-        Space(space = 8)
+        Space(space = 8.dp)
         Text(
             text = name,
             fontFamily = Sans,

@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 
 fun Modifier.clickableIf(condition: () -> Boolean, onClick: (() -> Unit)? = null): Modifier {
     return if (condition()) {
@@ -17,13 +17,13 @@ fun Modifier.clickableIf(condition: () -> Boolean, onClick: (() -> Unit)? = null
 }
 
 @Composable
-fun ColumnScope.Space(space: Int){
-    Spacer(modifier = Modifier.height(space.dp))
+fun ColumnScope.Space(space: Dp){
+    Spacer(modifier = Modifier.height(space))
 }
 
 @Composable
-fun RowScope.Space(space: Int){
-    Spacer(modifier = Modifier.width(space.dp))
+fun RowScope.Space(space: Dp){
+    Spacer(modifier = Modifier.width(space))
 }
 
 @Composable

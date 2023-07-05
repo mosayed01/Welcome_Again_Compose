@@ -76,7 +76,7 @@ fun BlurredCardPreview() {
                     contentDescription = null,
                     modifier = Modifier.size(16.dp)
                 )
-                Space(space = 4)
+                Space(space = 4.dp)
                 Text(text = "2h 23m")
 
             }
