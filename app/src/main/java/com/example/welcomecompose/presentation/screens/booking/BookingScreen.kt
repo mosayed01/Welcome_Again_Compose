@@ -39,7 +39,6 @@ import com.example.welcomecompose.presentation.screens.booking.composables.Heade
 import com.example.welcomecompose.presentation.screens.booking.composables.ItemRate
 import com.example.welcomecompose.presentation.screens.booking.composables.PlayButton
 import com.example.welcomecompose.presentation.screens.util.Space
-import com.example.welcomecompose.presentation.screens.util.WeightedSpacer
 import com.example.welcomecompose.presentation.ui.theme.Black38
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87
@@ -73,12 +72,11 @@ fun BookingScreenContent(
                 contentScale = ContentScale.FillWidth,
                 alignment = Alignment.TopCenter
             ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Header(state.time, onClickExit = onClickExit)
-        WeightedSpacer(weight = 1f)
         PlayButton()
-        WeightedSpacer(weight = 1f)
         BottomSheet(
             modifier = Modifier
                 .fillMaxWidth(),
