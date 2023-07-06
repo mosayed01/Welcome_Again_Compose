@@ -48,8 +48,6 @@ fun Chip(
     doWhenClick: () -> Unit = {},
     moreContent: (@Composable ColumnScope.(Color) -> Unit)? = null
 ) {
-//    var isSelectedState by remember { mutableStateOf(isSelected && isEnabled) }
-
     val actualBackgroundColors =
         if (isSelected) backgroundColors else listOf(Color.Transparent)
     val actualBorderColor = if (isSelected) Color.Transparent else borderColor

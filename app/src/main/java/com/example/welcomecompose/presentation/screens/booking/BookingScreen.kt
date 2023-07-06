@@ -1,8 +1,6 @@
 package com.example.welcomecompose.presentation.screens.booking
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -21,11 +19,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -38,6 +38,7 @@ import com.example.welcomecompose.presentation.screens.booking.composables.Heade
 import com.example.welcomecompose.presentation.screens.booking.composables.ItemRate
 import com.example.welcomecompose.presentation.screens.booking.composables.PlayButton
 import com.example.welcomecompose.presentation.screens.util.Space
+import com.example.welcomecompose.presentation.screens.util.WeightedSpacer
 import com.example.welcomecompose.presentation.ui.theme.Black38
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87
@@ -50,7 +51,10 @@ fun BookingScreen(
     screenPadding: PaddingValues
 ) {
     val state by remember { mutableStateOf(BookingUiState()) }
-    BookingScreenContent(state = state, screenPadding = screenPadding) { navController.popBackStack() }
+    BookingScreenContent(
+        state = state,
+        screenPadding = screenPadding
+    ) { navController.popBackStack() }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -60,25 +64,24 @@ fun BookingScreenContent(
     screenPadding: PaddingValues,
     onClickExit: () -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxSize().padding(screenPadding)) {
-        Image(
-            painter = painterResource(id = R.drawable.img_1),
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Header(state.time, onClickExit = onClickExit)
-            Space(space = 125.dp) // ! bad practice
-            PlayButton()
-        }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(screenPadding)
+            .paint(
+                painter = painterResource(id = R.drawable.img_1),
+                contentScale = ContentScale.FillWidth,
+                alignment = Alignment.TopCenter
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Header(state.time, onClickExit = onClickExit)
+        WeightedSpacer(weight = 1f)
+        PlayButton()
+        WeightedSpacer(weight = 1f)
         BottomSheet(
             modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
+                .fillMaxWidth(),
         ) {
             Row(
                 modifier = Modifier
@@ -155,5 +158,13 @@ fun BookingScreenContent(
                 modifier = Modifier.height(56.dp),
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun Preview() {
+    BookingScreenContent(state = BookingUiState(), screenPadding = PaddingValues(0.dp)) {
+
     }
 }
