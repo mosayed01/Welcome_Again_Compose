@@ -2,6 +2,7 @@ package com.example.welcomecompose.presentation.screens.booking
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
@@ -57,7 +58,6 @@ fun BookingScreen(
     ) { navController.popBackStack() }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BookingScreenContent(
     state: BookingUiState,
@@ -83,88 +83,94 @@ fun BookingScreenContent(
             modifier = Modifier
                 .fillMaxWidth(),
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceAround,
-            ) {
-                ItemRate(rateOfTen = state.rateOfTenIMDp, type = "IMDp")
+            BottomSheetContent(state)
+        }
+    }
+}
 
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "${state.rottenTomatoes}%",
-                        fontFamily = Sans,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 16.sp
-                    )
-                    Text(
-                        text = "Rotten Tomatoes",
-                        color = Black38,
-                        fontFamily = Sans,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 14.sp
-                    )
-                }
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ColumnScope.BottomSheetContent(
+    state: BookingUiState
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceAround,
+    ) {
+        ItemRate(rateOfTen = state.rateOfTenIMDp, type = "IMDp")
 
-                ItemRate(rateOfTen = state.rateOfTenIGN, type = "IGN")
-            }
-            Space(space = 16.dp)
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text = state.title,
-                style = Typography.bodyLarge
+                text = "${state.rottenTomatoes}%",
+                fontFamily = Sans,
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp
             )
-            Space(space = 8.dp)
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                state.genres.forEach {
-                    Chip(
-                        text = it,
-                        isEnabled = false,
-                        unSelectedTextColor = Black87,
-                        borderColor = Black8,
-                        fontSize = 12.sp
-                    )
-                }
-            }
-
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(state.images) {
-                    CircleImage(
-                        painter = painterResource(id = it),
-                        onClick = { /*TODO*/ }
-                    )
-                }
-            }
             Text(
-                text = state.overview,
-                color = Black87,
-                style = Typography.bodyLarge,
-                modifier = Modifier.padding(horizontal = 16.dp),
-                textAlign = TextAlign.Center,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis
+                text = "Rotten Tomatoes",
+                color = Black38,
+                fontFamily = Sans,
+                fontWeight = FontWeight.Medium,
+                fontSize = 14.sp
             )
-            Space(space = 32.dp)
-            TicketsButton(
-                painter = painterResource(id = R.drawable.card),
-                onClick = { /*TODO*/ },
-                text = "Booking",
-                modifier = Modifier.height(56.dp),
+        }
+
+        ItemRate(rateOfTen = state.rateOfTenIGN, type = "IGN")
+    }
+    Space(space = 16.dp)
+    Text(
+        text = state.title,
+        style = Typography.bodyLarge
+    )
+    Space(space = 8.dp)
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        state.genres.forEach {
+            Chip(
+                text = it,
+                isEnabled = false,
+                unSelectedTextColor = Black87,
+                borderColor = Black8,
+                fontSize = 12.sp
             )
         }
     }
+
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(state.images) {
+            CircleImage(
+                painter = painterResource(id = it),
+                onClick = { /*TODO*/ }
+            )
+        }
+    }
+    Text(
+        text = state.overview,
+        color = Black87,
+        style = Typography.bodyLarge,
+        modifier = Modifier.padding(horizontal = 16.dp),
+        textAlign = TextAlign.Center,
+        maxLines = 3,
+        overflow = TextOverflow.Ellipsis
+    )
+    Space(space = 32.dp)
+    TicketsButton(
+        painter = painterResource(id = R.drawable.card),
+        onClick = { /*TODO*/ },
+        text = "Booking",
+        modifier = Modifier.height(56.dp),
+    )
 }
 
 @Preview
 @Composable
 fun Preview() {
-    BookingScreenContent(state = BookingUiState(), screenPadding = PaddingValues(0.dp)) {
-
-    }
+    BookingScreenContent(state = BookingUiState(), screenPadding = PaddingValues(0.dp)) {}
 }
