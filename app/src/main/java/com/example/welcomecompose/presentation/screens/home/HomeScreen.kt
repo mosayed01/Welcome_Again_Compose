@@ -28,8 +28,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.BlurEffect
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -99,7 +99,9 @@ fun HomeScreenContent(
     state: HomeUiState,
     listener: HomeScreenInteractionsListener
 ) {
-    Box(modifier = Modifier.fillMaxSize().padding(screenPadding)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(screenPadding)) {
         Crossfade(
             targetState = state.images[pagerState.currentPage],
             animationSpec = tween(200, easing = FastOutSlowInEasing),
@@ -113,7 +115,13 @@ fun HomeScreenContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.5f)
-                        .blur(radius = 100.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+                        .graphicsLayer {
+                            renderEffect = BlurEffect(
+                                100f,
+                                100f,
+                            )
+                            clip = false
+                        }
                 )
             }
         }
