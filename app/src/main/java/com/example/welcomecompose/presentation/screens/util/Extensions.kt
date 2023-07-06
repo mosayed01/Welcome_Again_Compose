@@ -25,7 +25,7 @@ fun Modifier.cinemaStyle(clipRatio: Float = 0.8f, rotationX: Float = -35f): Modi
         Modifier
             .drawWithContent {
                 val path = Path().apply {
-                    val yRatio = 0.2f
+                    val yRatio = 0.25f
                     moveTo(0f, size.height * yRatio)
                     lineTo(0f, size.height)
                     quadraticBezierTo(

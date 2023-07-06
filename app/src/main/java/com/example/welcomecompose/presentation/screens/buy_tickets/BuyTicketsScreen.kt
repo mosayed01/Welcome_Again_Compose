@@ -100,7 +100,7 @@ fun BuyTicketsContent(
             contentDescription = "",
             modifier = Modifier
                 .fillMaxWidth()
-                .cinemaStyle(clipRatio = 0.58f)
+                .cinemaStyle(clipRatio = 0.36f, rotationX = -57f)
                 .constrainAs(image) {
                     top.linkTo(xIcon.bottom, (-16).dp)
                 },
@@ -115,7 +115,7 @@ fun BuyTicketsContent(
                 Pair(ChairState.Taken, ChairState.Available),
             ),
             modifier = Modifier.constrainAs(rowChairs1) {
-                top.linkTo(image.bottom, (-24).dp)
+                top.linkTo(image.bottom, (-8).dp)
             }
         )
 
@@ -167,7 +167,7 @@ fun BuyTicketsContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(information) {
-                    top.linkTo(rowChairs5.bottom)
+                    top.linkTo(rowChairs5.bottom, margin = (-8).dp)
                     bottom.linkTo(bottomSheet.top)
                 },
             horizontalArrangement = Arrangement.SpaceAround,
