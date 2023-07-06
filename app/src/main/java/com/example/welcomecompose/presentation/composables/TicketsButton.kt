@@ -1,6 +1,8 @@
 package com.example.welcomecompose.presentation.composables
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,6 +43,10 @@ fun TicketsButton(
     iconSize: Int = 24,
 ) {
     var isVisibleText by remember { mutableStateOf(false) }
+    val iconRotateDegree by animateFloatAsState(
+        targetValue = if (isVisibleText) 0f else 360f,
+        animationSpec = tween(500)
+    )
 
     Button(
         onClick = {
@@ -57,7 +64,9 @@ fun TicketsButton(
             painter = painter,
             contentDescription = "",
             tint = OnPrimaryLight,
-            modifier = Modifier.size(iconSize.dp)
+            modifier = Modifier
+                .size(iconSize.dp)
+                .rotate(iconRotateDegree)
         )
         text?.let {
             AnimatedVisibility(visible = isVisibleText) {
