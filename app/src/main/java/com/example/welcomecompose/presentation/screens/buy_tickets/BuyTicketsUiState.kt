@@ -4,7 +4,7 @@ data class BuyTicketsUiState(
     val selectedDay: Day = Day(17, "Sun"),
     val selectedTime: String = "10:00",
     val price: Double = 100.00,
-    val ticketsCount: Int = 5,
+    val ticketsCount: Int = 4,
     val days: List<Day> = listOf(
         Day(14, "Thu"),
         Day(15, "Fri"),

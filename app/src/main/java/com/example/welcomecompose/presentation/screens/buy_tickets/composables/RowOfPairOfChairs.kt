@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun RowOfPairOfChairs(
@@ -22,7 +23,7 @@ fun RowOfPairOfChairs(
         repeat(pairList.size) {
             PairChairs(
                 pair = pairList[it],
-                size = 35,
+                size = 35.dp,
                 modifier = Modifier.graphicsLayer {
                     val rotateDegree = if (it == 0) 10f else if (it == 1) 0f else -10f
                     val translatedY = if (it == 1) 30f else 0f

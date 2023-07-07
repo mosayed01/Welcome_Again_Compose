@@ -102,7 +102,7 @@ fun BuyTicketsContent(
                 },
         )
 
-        val gap = 50
+        val gap = 24
         /// region chairs
         RowOfPairOfChairs(
             pairList = listOf(
@@ -111,7 +111,7 @@ fun BuyTicketsContent(
                 Pair(ChairState.Taken, ChairState.Available),
             ),
             modifier = Modifier.constrainAs(rowChairs1) {
-                top.linkTo(image.bottom, (-8).dp)
+                top.linkTo(image.bottom)
             }
         )
 
@@ -122,7 +122,7 @@ fun BuyTicketsContent(
                 Pair(ChairState.Available, ChairState.Available),
             ),
             modifier = Modifier.constrainAs(rowChairs2) {
-                top.linkTo(rowChairs1.bottom, (-gap).dp)
+                top.linkTo(rowChairs1.bottom, (gap).dp)
             }
         )
 
@@ -133,7 +133,7 @@ fun BuyTicketsContent(
                 Pair(ChairState.Taken, ChairState.Taken),
             ),
             modifier = Modifier.constrainAs(rowChairs3) {
-                top.linkTo(rowChairs2.bottom, (-gap).dp)
+                top.linkTo(rowChairs2.bottom, (gap).dp)
             }
         )
 
@@ -144,7 +144,7 @@ fun BuyTicketsContent(
                 Pair(ChairState.Available, ChairState.Available),
             ),
             modifier = Modifier.constrainAs(rowChairs4) {
-                top.linkTo(rowChairs3.bottom, (-gap).dp)
+                top.linkTo(rowChairs3.bottom, (gap).dp)
             }
         )
         RowOfPairOfChairs(
@@ -154,7 +154,7 @@ fun BuyTicketsContent(
                 Pair(ChairState.Available, ChairState.Available),
             ),
             modifier = Modifier.constrainAs(rowChairs5) {
-                top.linkTo(rowChairs4.bottom, (-gap).dp)
+                top.linkTo(rowChairs4.bottom, (gap).dp)
             }
         )
         /// endregion
@@ -163,7 +163,7 @@ fun BuyTicketsContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(information) {
-                    top.linkTo(rowChairs5.bottom, margin = (-8).dp)
+                    top.linkTo(rowChairs5.bottom)
                     bottom.linkTo(bottomSheet.top)
                 },
             horizontalArrangement = Arrangement.SpaceAround,
@@ -174,54 +174,7 @@ fun BuyTicketsContent(
                 bottom.linkTo(parent.bottom)
             }
         ) {
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                items(state.days) {
-                    DateChip(
-                        it,
-                        isSelected = it == state.selectedDay,
-                        doWhenSelect = listener::doWhenSelectDay
-                    )
-                }
-            }
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                items(state.timeList) {
-                    HourChip(
-                        it,
-                        isSelected = it == state.selectedTime,
-                        doWhenSelectHour = listener::doWhenSelectHour,
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(horizontalAlignment = Alignment.Start) {
-                    Text(
-                        text = "$${state.price}",
-                        style = Typography.displaySmall
-                    )
-                    Text(
-                        text = "${state.ticketsCount} tickets",
-                        style = Typography.headlineSmall
-                    )
-                }
-                TicketsButton(
-                    painter = painterResource(id = R.drawable.card),
-                    onClick = listener::onClickBuy,
-                    text = "Buy Tickets",
-                    modifier = Modifier.height(56.dp),
-                )
-            }
+            BottomSheetContent(state, listener)
         }
     }
 }
@@ -233,9 +186,65 @@ private fun Information() {
     SelectedRadioItem(chairState = ChairState.Selected)
 }
 
+@Composable
+private fun BottomSheetContent(
+    state: BuyTicketsUiState,
+    listener: BuyTicketsInteractionsListener
+) {
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        items(state.days) {
+            DateChip(
+                it,
+                isSelected = it == state.selectedDay,
+                doWhenSelect = listener::doWhenSelectDay
+            )
+        }
+    }
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        items(state.timeList) {
+            HourChip(
+                it,
+                isSelected = it == state.selectedTime,
+                doWhenSelectHour = listener::doWhenSelectHour,
+            )
+        }
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(horizontalAlignment = Alignment.Start) {
+            Text(
+                text = "$${state.price}",
+                style = Typography.displaySmall
+            )
+            Text(
+                text = "${state.ticketsCount} tickets",
+                style = Typography.headlineSmall
+            )
+        }
+        TicketsButton(
+            painter = painterResource(id = R.drawable.card),
+            onClick = listener::onClickBuy,
+            text = "Buy Tickets",
+            modifier = Modifier.height(56.dp),
+        )
+    }
+}
+
 @Preview(showBackground = true, showSystemUi = true, device = "id:pixel_3a_xl")
 @Composable
-fun BuyTicketsScreenPrev() {
+private fun BuyTicketsScreenPrev() {
     WelcomeComposeTheme {
         BuyTicketsScreen(rememberNavController())
     }

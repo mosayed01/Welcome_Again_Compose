@@ -31,7 +31,7 @@ fun SelectedRadioItem(
     }
     val color = when (chairState) {
         ChairState.Available -> White87
-        ChairState.Taken -> DarkGray
+        ChairState.Taken -> DarkGray.copy(0.4f)
         ChairState.Selected -> PrimaryLight
     }
 
