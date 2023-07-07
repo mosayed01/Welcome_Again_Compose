@@ -40,7 +40,6 @@ import com.example.welcomecompose.presentation.composables.Chip
 import com.example.welcomecompose.presentation.screens.Screens
 import com.example.welcomecompose.presentation.screens.home.composables.Carousel
 import com.example.welcomecompose.presentation.screens.home.composables.GradientOverlay
-import com.example.welcomecompose.presentation.screens.util.Space
 import com.example.welcomecompose.presentation.ui.theme.Black38
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87
@@ -125,15 +124,14 @@ fun HomeScreenContent(
                 )
             }
         }
+
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 24.dp),
-                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
             ) {
                 Chip(
                     text = state.nowShowingChip.title,
@@ -141,7 +139,6 @@ fun HomeScreenContent(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     doWhenClick = listener::onClickNowShowing
                 )
-                Space(space = 8.dp)
                 Chip(
                     text = state.comingSoonChip.title,
                     isSelected = state.comingSoonChip.isSelected,
@@ -149,6 +146,7 @@ fun HomeScreenContent(
                     doWhenClick = listener::onClickComingSoon
                 )
             }
+
             Carousel(
                 onClickItem = listener::onClickImage,
                 pagerState = pagerState,
@@ -166,7 +164,7 @@ fun HomeScreenContent(
             Row(
                 modifier = Modifier.padding(top = 24.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.time),
@@ -174,7 +172,6 @@ fun HomeScreenContent(
                     tint = Black38,
                     modifier = Modifier.size(16.dp),
                 )
-                Space(space = 4.dp)
                 Text(
                     text = state.time,
                     style = Typography.bodySmall,
