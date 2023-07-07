@@ -150,11 +150,18 @@ fun HomeScreenContent(
                 )
             }
             Carousel(
-                onClickImage = listener::onClickImage,
+                onClickItem = listener::onClickImage,
                 pagerState = pagerState,
-                images = state.images,
+                items = state.images,
                 modifier = Modifier.padding(top = 24.dp)
-            )
+            ) { modifier, item ->
+                Image(
+                    painter = painterResource(id = item),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier
+                )
+            }
 
             Row(
                 modifier = Modifier.padding(top = 24.dp),

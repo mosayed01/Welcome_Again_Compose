@@ -3,7 +3,6 @@ package com.example.welcomecompose.presentation.screens.home.composables
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -15,21 +14,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Carousel(
-    onClickImage: () -> Unit,
+fun <T> Carousel(
+    onClickItem: () -> Unit,
     pagerState: PagerState,
-    images: List<Int>,
-    modifier: Modifier = Modifier
+    items: List<T>,
+    modifier: Modifier = Modifier,
+    content: @Composable (modifier: Modifier, item: T) -> Unit
 ) {
     HorizontalPager(
         state = pagerState,
-        pageCount = images.size,
+        pageCount = items.size,
         contentPadding = PaddingValues(horizontal = 32.dp),
         modifier = modifier
     ) {
@@ -37,16 +35,13 @@ fun Carousel(
             targetValue = if (it == pagerState.currentPage) 1f else 0.9f,
             animationSpec = tween(durationMillis = 200)
         )
-
-        Image(
-            painter = painterResource(id = images[it % images.size]),
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
+        content(
+            Modifier
                 .aspectRatio(3 / 4f)
                 .scale(animatedScale)
                 .clip(MaterialTheme.shapes.extraLarge)
-                .clickable { onClickImage() }
+                .clickable { onClickItem() },
+            items[it % items.size]
         )
     }
 }
