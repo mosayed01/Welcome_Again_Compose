@@ -23,10 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -40,9 +38,8 @@ import com.example.welcomecompose.presentation.screens.buy_tickets.composables.H
 import com.example.welcomecompose.presentation.screens.buy_tickets.composables.RowOfPairOfChairs
 import com.example.welcomecompose.presentation.screens.buy_tickets.composables.SelectedRadioItem
 import com.example.welcomecompose.presentation.screens.util.cinemaStyle
-import com.example.welcomecompose.presentation.ui.theme.Black60
-import com.example.welcomecompose.presentation.ui.theme.Black87
-import com.example.welcomecompose.presentation.ui.theme.Sans
+import com.example.welcomecompose.presentation.ui.theme.Typography
+import com.example.welcomecompose.presentation.ui.theme.WelcomeComposeTheme
 
 @Composable
 fun BuyTicketsScreen(
@@ -204,27 +201,19 @@ fun BuyTicketsContent(
                 }
             }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column(horizontalAlignment = Alignment.Start) {
                     Text(
                         text = "$${state.price}",
-                        fontSize = 24.sp,
-                        fontFamily = Sans,
-                        fontWeight = FontWeight.Bold,
-                        color = Black87,
+                        style = Typography.displaySmall
                     )
                     Text(
                         text = "${state.ticketsCount} tickets",
-                        fontSize = 11.sp,
-                        fontFamily = Sans,
-                        fontWeight = FontWeight.Normal,
-                        color = Black60
+                        style = Typography.headlineSmall
                     )
-
                 }
                 TicketsButton(
                     painter = painterResource(id = R.drawable.card),
@@ -247,5 +236,7 @@ private fun Information() {
 @Preview(showBackground = true, showSystemUi = true, device = "id:pixel_3a_xl")
 @Composable
 fun BuyTicketsScreenPrev() {
-    BuyTicketsScreen(rememberNavController())
+    WelcomeComposeTheme {
+        BuyTicketsScreen(rememberNavController())
+    }
 }

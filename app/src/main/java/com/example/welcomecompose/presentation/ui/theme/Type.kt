@@ -30,6 +30,18 @@ val Typography = Typography(
         fontFamily = Sans,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp
+    ),
+    displaySmall = TextStyle(
+        fontSize = 24.sp,
+        fontFamily = Sans,
+        fontWeight = FontWeight.Bold,
+        color = Black87,
+    ),
+    headlineSmall = TextStyle(
+        fontSize = 11.sp,
+        fontFamily = Sans,
+        fontWeight = FontWeight.Normal,
+        color = Black60
     )
 
 )
