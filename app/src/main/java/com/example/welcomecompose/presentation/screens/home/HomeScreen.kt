@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,12 +50,12 @@ import com.example.welcomecompose.presentation.ui.theme.Typography
 @Composable
 fun HomeScreen(
     navController: NavController,
-    screenPadding: PaddingValues,
+    modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState(initialPage = 1)
     var homeUiState by remember { mutableStateOf(HomeUiState()) }
     HomeScreenContent(
-        screenPadding = screenPadding,
+        modifier = modifier,
         pagerState = pagerState,
         state = homeUiState,
         listener = object : HomeScreenInteractionsListener { // cause I don't need a view model
@@ -94,17 +93,18 @@ fun HomeScreen(
 )
 @Composable
 fun HomeScreenContent(
-    screenPadding: PaddingValues,
     pagerState: PagerState,
     state: HomeUiState,
-    listener: HomeScreenInteractionsListener
+    listener: HomeScreenInteractionsListener,
+    modifier: Modifier = Modifier,
 ) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(screenPadding)) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
         Crossfade(
             targetState = state.images[pagerState.currentPage],
-            animationSpec = tween(200, easing = FastOutSlowInEasing),
+            animationSpec = tween(800, easing = FastOutSlowInEasing),
             label = "Cross Fade Animation For Background"
         ) { selectedImageRes ->
             GradientOverlay {
@@ -205,7 +205,6 @@ fun HomeScreenContent(
 @Composable
 fun HomeScreenPrev() {
     HomeScreenContent(
-        screenPadding = PaddingValues(vertical = 0.dp),
         pagerState = PagerState(initialPage = 1),
         state = HomeUiState(),
         listener = object : HomeScreenInteractionsListener {

@@ -25,14 +25,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.ui.theme.OnPrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.PrimaryLight
-import com.example.welcomecompose.presentation.ui.theme.Sans
+import com.example.welcomecompose.presentation.ui.theme.Typography
 
 @Composable
 fun TicketsButton(
@@ -72,9 +70,7 @@ fun TicketsButton(
             AnimatedVisibility(visible = isVisibleText) {
                 Text(
                     text = it,
-                    fontSize = 16.sp,
-                    fontFamily = Sans,
-                    fontWeight = FontWeight.Normal,
+                    style = Typography.bodyLarge,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }

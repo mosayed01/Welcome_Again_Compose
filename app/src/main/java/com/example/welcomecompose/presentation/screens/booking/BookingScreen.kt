@@ -2,7 +2,6 @@ package com.example.welcomecompose.presentation.screens.booking
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,38 +33,35 @@ import com.example.welcomecompose.presentation.composables.BottomSheet
 import com.example.welcomecompose.presentation.composables.Chip
 import com.example.welcomecompose.presentation.composables.CircleImage
 import com.example.welcomecompose.presentation.composables.TicketsButton
-import com.example.welcomecompose.presentation.screens.booking.composables.Header
+import com.example.welcomecompose.presentation.screens.booking.composables.BookingAppbar
 import com.example.welcomecompose.presentation.screens.booking.composables.ItemRate
 import com.example.welcomecompose.presentation.screens.booking.composables.PlayButton
-import com.example.welcomecompose.presentation.screens.util.Space
-import com.example.welcomecompose.presentation.ui.theme.Black38
 import com.example.welcomecompose.presentation.ui.theme.Black8
 import com.example.welcomecompose.presentation.ui.theme.Black87
-import com.example.welcomecompose.presentation.ui.theme.Sans
 import com.example.welcomecompose.presentation.ui.theme.Typography
+import kotlin.math.roundToInt
 
 @Composable
 fun BookingScreen(
     navController: NavController,
-    screenPadding: PaddingValues
+    modifier: Modifier = Modifier
 ) {
     val state by remember { mutableStateOf(BookingUiState()) }
     BookingScreenContent(
         state = state,
-        screenPadding = screenPadding
+        modifier = modifier,
     ) { navController.popBackStack() }
 }
 
 @Composable
 fun BookingScreenContent(
     state: BookingUiState,
-    screenPadding: PaddingValues,
+    modifier: Modifier = Modifier,
     onClickExit: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(screenPadding)
             .paint(
                 painter = painterResource(id = R.drawable.img_1),
                 contentScale = ContentScale.FillWidth,
@@ -75,7 +70,7 @@ fun BookingScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Header(state.time, onClickExit = onClickExit)
+        BookingAppbar(state.time, onClickExit = onClickExit)
         PlayButton()
         BottomSheet(
             modifier = Modifier
@@ -88,43 +83,40 @@ fun BookingScreenContent(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun ColumnScope.BottomSheetContent(
-    state: BookingUiState
+private fun BottomSheetContent(
+    state: BookingUiState,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceAround,
     ) {
-        ItemRate(rateOfTen = state.rateOfTenIMDp, type = "IMDp")
+        ItemRate(
+            text = ((state.rateOfTenIMDp * 10.0).roundToInt() / 10.0).toString(),
+            secondText = "/10",
+            type = "IMDp"
+        )
 
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = "${state.rottenTomatoes}%",
-                fontFamily = Sans,
-                fontWeight = FontWeight.Medium,
-                fontSize = 16.sp
-            )
-            Text(
-                text = "Rotten Tomatoes",
-                color = Black38,
-                fontFamily = Sans,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp
-            )
-        }
+        ItemRate(text = "${state.rottenTomatoes}%", type = "Rotten Tomatoes")
 
-        ItemRate(rateOfTen = state.rateOfTenIGN, type = "IGN")
+        ItemRate(
+            text = ((state.rateOfTenIGN * 10.0).roundToInt() / 10.0).toString(),
+            secondText = "/10",
+            type = "IGN"
+        )
     }
-    Space(space = 16.dp)
+
     Text(
         text = state.title,
-        style = Typography.bodyLarge
+        style = Typography.bodyLarge,
+        modifier = Modifier.padding(top = 16.dp)
     )
-    Space(space = 8.dp)
+
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.padding(top = 8.dp)
     ) {
         state.genres.forEach {
             Chip(
@@ -149,6 +141,7 @@ private fun ColumnScope.BottomSheetContent(
             )
         }
     }
+
     Text(
         text = state.overview,
         color = Black87,
@@ -158,17 +151,17 @@ private fun ColumnScope.BottomSheetContent(
         maxLines = 3,
         overflow = TextOverflow.Ellipsis
     )
-    Space(space = 32.dp)
+
     TicketsButton(
         painter = painterResource(id = R.drawable.card),
         onClick = { /*TODO*/ },
         text = "Booking",
-        modifier = Modifier.height(56.dp),
+        modifier = Modifier.padding(top = 24.dp).height(56.dp),
     )
 }
 
 @Preview
 @Composable
 fun Preview() {
-    BookingScreenContent(state = BookingUiState(), screenPadding = PaddingValues(0.dp)) {}
+    BookingScreenContent(state = BookingUiState()) {}
 }

@@ -34,7 +34,7 @@ import com.example.welcomecompose.R
 import com.example.welcomecompose.presentation.composables.BottomSheet
 import com.example.welcomecompose.presentation.composables.ExitIcon
 import com.example.welcomecompose.presentation.composables.TicketsButton
-import com.example.welcomecompose.presentation.composables.ui_models.ChairState
+import com.example.welcomecompose.presentation.screens.buy_tickets.composables.ChairState
 import com.example.welcomecompose.presentation.screens.buy_tickets.composables.DateChip
 import com.example.welcomecompose.presentation.screens.buy_tickets.composables.HourChip
 import com.example.welcomecompose.presentation.screens.buy_tickets.composables.RowOfPairOfChairs
@@ -47,7 +47,7 @@ import com.example.welcomecompose.presentation.ui.theme.Sans
 @Composable
 fun BuyTicketsScreen(
     navController: NavController,
-    screenPadding: PaddingValues
+    modifier: Modifier = Modifier
 ) {
     var buyTicketsUiState by remember { mutableStateOf(BuyTicketsUiState()) }
     BuyTicketsContent(
@@ -70,7 +70,7 @@ fun BuyTicketsScreen(
 
         },
         state = buyTicketsUiState,
-        screenPadding = screenPadding
+        modifier = modifier
     )
 }
 
@@ -78,12 +78,11 @@ fun BuyTicketsScreen(
 fun BuyTicketsContent(
     state: BuyTicketsUiState,
     listener: BuyTicketsInteractionsListener,
-    screenPadding: PaddingValues
+    modifier: Modifier = Modifier
 ) {
     ConstraintLayout(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(screenPadding)
             .background(Color.Black)
     ) {
         val (xIcon, image, rowChairs1,
@@ -248,5 +247,5 @@ private fun Information() {
 @Preview(showBackground = true, showSystemUi = true, device = "id:pixel_3a_xl")
 @Composable
 fun BuyTicketsScreenPrev() {
-    BuyTicketsScreen(rememberNavController(), PaddingValues(0.dp))
+    BuyTicketsScreen(rememberNavController())
 }

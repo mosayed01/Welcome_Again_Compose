@@ -14,7 +14,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.welcomecompose.R
-import com.example.welcomecompose.presentation.composables.ui_models.ChairState
 import com.example.welcomecompose.presentation.ui.theme.DarkGray
 import com.example.welcomecompose.presentation.ui.theme.PrimaryLight
 import com.example.welcomecompose.presentation.ui.theme.White87

@@ -16,11 +16,12 @@ import com.example.welcomecompose.presentation.ui.theme.OnPrimaryLight
 
 @Composable
 fun ExitIcon(
-    onClickExit: () -> Unit
+    onClickExit: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     BlurredCard(
         onClick = { onClickExit() },
-        modifier = Modifier.padding(8.dp)
+        modifier = modifier.padding(8.dp)
     ) {
         Box(
             modifier = Modifier

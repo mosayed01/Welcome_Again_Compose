@@ -54,7 +54,7 @@ fun BlurredCard(
 
 @Preview(showSystemUi = true, showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
-fun BlurredCardPreview() {
+private fun BlurredCardPreview() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

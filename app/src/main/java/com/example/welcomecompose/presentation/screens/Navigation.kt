@@ -5,10 +5,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -33,22 +35,26 @@ fun Navigation(
         bottomBar = {
             AnimatedVisibility(
                 visible = currentRoute == Screens.Home.route,
-                enter =  slideInVertically() + fadeIn(),
+                enter = slideInVertically() + fadeIn(),
                 exit = slideOutVertically { it } + fadeOut()
             ) {
                 CustomBottomNav { navController.navigate(Screens.BuyTickets.route) }
             }
         },
     ) { screenPadding ->
-        NavHost(navController = navController, startDestination = Screens.Home.route) {
+        NavHost(
+            navController = navController,
+            startDestination = Screens.Home.route,
+            modifier = Modifier.padding(screenPadding)
+        ) {
             composable(Screens.Home.route) {
-                HomeScreen(navController = navController, screenPadding = screenPadding)
+                HomeScreen(navController = navController)
             }
             composable(Screens.Booking.route) {
-                BookingScreen(navController = navController, screenPadding = screenPadding)
+                BookingScreen(navController = navController)
             }
             composable(Screens.BuyTickets.route) {
-                BuyTicketsScreen(navController = navController, screenPadding = screenPadding)
+                BuyTicketsScreen(navController = navController)
             }
         }
     }

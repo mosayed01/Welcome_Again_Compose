@@ -1,4 +1,4 @@
-package com.example.welcomecompose.presentation.composables.ui_models
+package com.example.welcomecompose.presentation.screens.buy_tickets.composables
 
 
 enum class ChairState {
@@ -7,7 +7,7 @@ enum class ChairState {
     Selected
 }
 
-fun ChairState.nextState(): ChairState{
+fun ChairState.nextState(): ChairState {
     return when(this){
         ChairState.Available -> ChairState.Taken
         ChairState.Taken -> ChairState.Selected

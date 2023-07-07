@@ -23,12 +23,13 @@ import com.example.welcomecompose.presentation.ui.theme.White38
 import com.example.welcomecompose.presentation.ui.theme.White60
 
 @Composable
-fun Header(
+fun BookingAppbar(
     time: String,
     onClickExit: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .padding(top = 24.dp),
